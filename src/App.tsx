@@ -1,26 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+// Redux Tool Kit
+// import store, { persistor } from 'store/store';
+// import { Provider } from 'react-redux';
+// import { PersistGate } from 'redux-persist/lib/integration/react';
+
+// components
+// import { DisclaimerCustom } from './components/disclaimer/disclaimerCustom';
+
+// web3
+// import { ConnectKitProvider } from 'connectkit';
+// import { WagmiConfig } from 'wagmi';
+// import { client } from 'service/web3Service';
+import { HomeView } from 'views/HomeView';
+
+// routes
+// import { RouterComponent } from './routes/RouterComponent';
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HomeView />
   );
-}
+};
 
 export default App;
