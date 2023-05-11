@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { myToken } from '../service/web3Service';
 import { getDefaultProvider } from 'ethers';
+import { Box, Button, Typography } from '@mui/material';
+import { LabelAndText } from 'components/LabelAndText';
+
+
 
 
 export function HomeView() {
@@ -49,29 +53,28 @@ export function HomeView() {
 
 
   return (
-    <div>
-      <h1>Interfaz de Usuario para Smart Contract</h1>
-      <button onClick={handleButtonClick}>Obtener datos</button>
-      {/* <button onClick={handleButtonMaticClick}>Obtener datos con red Matic</button> */}
+    <Box>
+      <Typography variant='h2' >Interfaz de Usuario para Smart Contract</Typography>
+      <Button variant='contained' onClick={handleButtonClick}>Obtener datos</Button>
       {network && (
-        <p>Network: {network}</p>
+        <LabelAndText title='Network:' subtitle={network} />
       )}
       {address && (
-        <p>Address: {address}</p>
+        <LabelAndText title='Address:' subtitle={address} />
       )}
       {name && (
-        <p>Name: {name}</p>
+        <LabelAndText title='Name:' subtitle={name} />
       )}
       {symbol && (
-        <p>Symbol: {symbol}</p>
+        <LabelAndText title='Symbol:' subtitle={symbol} />
       )}
       {decimals && (
-        <p>Decimals: {decimals}</p>
+        <LabelAndText title='Decimals:' subtitle={decimals} />
       )}
       {totalSupply && (
-        <p>Total Supply: {totalSupply}</p>
+        <LabelAndText title='Total Supply:' subtitle={totalSupply} />
       )}
-    </div>
+    </Box>
   );
 }
 
