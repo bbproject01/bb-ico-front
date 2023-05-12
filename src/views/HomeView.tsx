@@ -42,6 +42,7 @@ export const HomeView: React.FC = () => {
         provider = new ethers.BrowserProvider(window.ethereum);
         signer = await provider.getSigner();
         const network = await provider.getNetwork();
+        console.log('network: ', network);
         setNetwork(network.name);
       }
       const contract = new ethers.Contract(address, myToken.abi, signer);

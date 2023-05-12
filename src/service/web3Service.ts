@@ -17,6 +17,4 @@ const myToken = {
   abi: myTokenBNBABI
 };
 
-export {
-    myToken,
-};
+export { myToken };
