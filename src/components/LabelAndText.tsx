@@ -1,14 +1,14 @@
 import React from 'react';
 import { Grid, Typography } from '@mui/material';
 
-interface Props {
+interface IProps {
   title: String;
   subtitle: String;
 }
 
 
 
-export function LabelAndText({ title, subtitle }: Props) {
+export const LabelAndText: React.FC<IProps> = ({ title, subtitle } ) => {
   return (
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={6}>

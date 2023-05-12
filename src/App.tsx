@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { HomeView } from 'views/HomeView';
+import { Provider } from 'react-redux';
 
-const App: React.FC = () => {
+import { HomeView } from 'views/HomeView';
+import store from 'store';
+
+export const App: React.FC = () => {
   return (
-    <HomeView />
+    <Provider store={store}>
+      <HomeView />
+    </Provider>
   );
 };
-
-export default App;
