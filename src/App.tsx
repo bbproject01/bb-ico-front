@@ -1,15 +1,25 @@
 import React from 'react';
 
+// Redux Tool Kit
+import store from 'store';
 import { Provider } from 'react-redux';
 
-// import { HomeView } from 'views/HomeView';
-import store from 'store';
-import { Dashboard } from 'views/Dashboard/Dashboard';
+// components
+
+// web3
+import { ConnectKitProvider } from 'connectkit';
+import { WagmiConfig } from 'wagmi';
+import { config } from 'service/web3Service';
+import { RouterComponent } from 'routes/RouterComponent';
 
 export const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <Dashboard />
+      <WagmiConfig config={config}>
+        <ConnectKitProvider>
+          <RouterComponent />
+        </ConnectKitProvider>
+      </WagmiConfig>
     </Provider>
   );
 };

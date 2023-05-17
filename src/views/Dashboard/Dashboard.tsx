@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ethers, getDefaultProvider } from 'ethers';
+import { ethers } from 'ethers';
+// import { ethers, getDefaultProvider } from 'ethers';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -12,13 +13,14 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
+// import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+// import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
@@ -26,12 +28,15 @@ import Orders from './Orders';
 import { useCustomDispatch, useCustomSelector } from 'hooks/redux';
 import {
   setAddress,
+  // setAddress,
   setDecimals,
   setName,
   setSymbol,
   setTotalSupply
 } from 'store/TokenBNB';
 import { myToken } from 'service/web3Service';
+import { useAccount, useDisconnect } from 'wagmi';
+import { Navigate } from 'react-router-dom';
 
 const drawerWidth: number = 240;
 
@@ -87,7 +92,7 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 const DashboardContent: React.FC = () => {
-  const [network, setNetwork] = useState('');
+  const { isConnected } = useAccount();
   const [open, setOpen] = useState(true);
   const toggleDrawer = (): void => {
     setOpen(!open);
@@ -95,34 +100,20 @@ const DashboardContent: React.FC = () => {
   const {
     tokenBNB: { address, name, symbol, decimals, totalSupply }
   } = useCustomSelector((state) => state);
+  const { disconnect } = useDisconnect();
 
   const dispatch = useCustomDispatch();
 
   useEffect(() => {
-    const temp =
-      network === 'matic-mumbai'
-        ? myToken.address_matic
-        : myToken.address_goerli;
-    dispatch(setAddress(temp));
-    setNetwork(network);
-  }, [network, dispatch]);
-
-  useEffect(() => {
     const getData = async (): Promise<void> => {
       try {
-        let signer = null;
-        let provider;
-        if (window.ethereum == null) {
-          console.log('MetaMask not installed; using read-only defaults');
-          provider = getDefaultProvider;
-        } else {
-          provider = new ethers.BrowserProvider(window.ethereum);
-          signer = await provider.getSigner();
-          const network = await provider.getNetwork();
-          console.log('network: ', network);
-          setNetwork(network.name);
-        }
-        const contract = new ethers.Contract(address, myToken.abi, signer);
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+          myToken.address_matic,
+          myToken.abi,
+          signer
+        );
 
         const tempName = await contract.name();
         const tempSymbol = await contract.symbol();
@@ -133,6 +124,7 @@ const DashboardContent: React.FC = () => {
         dispatch(setSymbol(tempSymbol.toString()));
         dispatch(setDecimals(tempDecimals.toString()));
         dispatch(setTotalSupply(tempTotalSupply.toString()));
+        dispatch(setAddress(myToken.address_matic));
       } catch (error) {
         console.error(error);
       }
@@ -140,6 +132,14 @@ const DashboardContent: React.FC = () => {
 
     getData();
   }, [dispatch, name, symbol, decimals, totalSupply, address]);
+
+  const handleDisconect = (): void => {
+    disconnect();
+  };
+
+  if (!isConnected) {
+    return <Navigate to="/*" />;
+  }
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -172,10 +172,9 @@ const DashboardContent: React.FC = () => {
             >
               Dashboard
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
+            <IconButton color="inherit" onClick={handleDisconect}>
+              <Typography> Logout </Typography>
+              <LogoutIcon />
             </IconButton>
           </Toolbar>
         </AppBar>

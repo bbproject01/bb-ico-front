@@ -1,4 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 
 import tokenSlice from './TokenBNB';
 
@@ -15,3 +16,9 @@ export type RootState = ReturnType<typeof store.getState>;
 export type Dispatch = typeof store.dispatch;
 
 export default store;
+export type Thunk = ThunkAction<
+  Promise<unknown>,
+  RootState,
+  unknown,
+  Action<unknown>
+>;

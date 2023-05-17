@@ -1,4 +1,42 @@
 import myTokenBNBABI from '../blockchain/artifacts/MyToken.json';
+import { createConfig, configureChains, mainnet } from 'wagmi';
+import { goerli, polygonMumbai } from 'wagmi/chains';
+
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
+
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import { InjectedConnector } from 'wagmi/connectors/injected';
+
+import { publicProvider } from 'wagmi/providers/public';
+
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [polygonMumbai, goerli, mainnet],
+  [
+    jsonRpcProvider({
+      rpc: () => ({
+        http: 'https://billowing-omniscient-pond.matic-testnet.discover.quiknode.pro/0dd510cd9e0e5ad9bfdbfeeec2ea432a4f88e59d/' // 👈 Replace this with your HTTP URL from the previous step
+      })
+    }),
+    publicProvider()
+  ]
+);
+
+// Set up wagmi config
+const config = createConfig({
+  autoConnect: true,
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: 'Injected',
+        shimDisconnect: true
+      }
+    })
+  ],
+  publicClient,
+  webSocketPublicClient
+});
 
 // /**
 //  *  Addres de los contratos
@@ -17,4 +55,4 @@ const myToken = {
   abi: myTokenBNBABI
 };
 
-export { myToken };
+export { myToken, config };
