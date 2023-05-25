@@ -1,4 +1,5 @@
 import myTokenBNBABI from '../blockchain/artifacts/MyToken.json';
+import myFNFTABI from '../blockchain/artifacts/ERC1155.json';
 import { createConfig, configureChains, mainnet } from 'wagmi';
 import { goerli, polygonMumbai } from 'wagmi/chains';
 
@@ -41,18 +42,22 @@ const config = createConfig({
 // /**
 //  *  Addres de los contratos
 //  */
-const ADDRESS_CONTRACT_TOKEN_BNB_GOERLI =
-  process.env.ADDRESS_CONTRACT_TOKEN_BNB_GOERLI ??
-  '0xc72E66D079a4387A6c6cFfe8B07AB205a2E2a600';
-
 const ADDRESS_CONTRACT_TOKEN_BNB_MATIC =
   process.env.ADDRESS_CONTRACT_TOKEN_BNB_MATIC ??
-  '0x012e8Bb9950B72Fbecb8829B553249b3D24b0042';
+  '0x5080b3ab6a3B5e8893F085B33696d74d1377B5c8';
+
+const ADDRESS_CONTRACT_ERC1155_BNB_MATIC =
+  process.env.ADDRESS_CONTRACT_ERC1155_BNB_MATIC ??
+  '0xa790F4938e4Daf439674085C0c335C0eb49aE5e4';
 
 const myToken = {
-  address_goerli: ADDRESS_CONTRACT_TOKEN_BNB_GOERLI,
-  address_matic: ADDRESS_CONTRACT_TOKEN_BNB_MATIC,
+  address: ADDRESS_CONTRACT_TOKEN_BNB_MATIC,
   abi: myTokenBNBABI
 };
 
-export { myToken, config };
+const ERC1155 = {
+  address: ADDRESS_CONTRACT_ERC1155_BNB_MATIC,
+  abi: myFNFTABI
+};
+
+export { myToken, ERC1155, config };

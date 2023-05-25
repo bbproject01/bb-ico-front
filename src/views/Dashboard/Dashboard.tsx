@@ -27,7 +27,7 @@ import Deposits from './Deposits';
 import Orders from './Orders';
 import { useCustomDispatch, useCustomSelector } from 'hooks/redux';
 import {
-  setAddress,
+  setAddressToken,
   // setAddress,
   setDecimals,
   setName,
@@ -37,6 +37,11 @@ import {
 import { myToken } from 'service/web3Service';
 import { useAccount, useDisconnect } from 'wagmi';
 import { Navigate } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
+import BalanceOf from './BalanceOf';
+import TransferComponent from './TransferComponent';
+import AllowanceComponent from './AllowanceComponent';
+import ApproveComponent from './ApproveComponent';
 
 const drawerWidth: number = 240;
 
@@ -92,13 +97,15 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 const DashboardContent: React.FC = () => {
+  const [isLoadingComponent, setIsLoadingComponent] = useState<boolean>(true);
   const { isConnected } = useAccount();
+  // const [balanceOf, setBalanceOf] = useState<string>('');
   const [open, setOpen] = useState(true);
   const toggleDrawer = (): void => {
     setOpen(!open);
   };
   const {
-    tokenBNB: { address, name, symbol, decimals, totalSupply }
+    tokenBNB: { addressToken, name, symbol, decimals, totalSupply }
   } = useCustomSelector((state) => state);
   const { disconnect } = useDisconnect();
 
@@ -107,10 +114,11 @@ const DashboardContent: React.FC = () => {
   useEffect(() => {
     const getData = async (): Promise<void> => {
       try {
+        setIsLoadingComponent(true);
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(
-          myToken.address_matic,
+          myToken.address,
           myToken.abi,
           signer
         );
@@ -124,14 +132,15 @@ const DashboardContent: React.FC = () => {
         dispatch(setSymbol(tempSymbol.toString()));
         dispatch(setDecimals(tempDecimals.toString()));
         dispatch(setTotalSupply(tempTotalSupply.toString()));
-        dispatch(setAddress(myToken.address_matic));
+        dispatch(setAddressToken(myToken.address));
+        setIsLoadingComponent(false);
       } catch (error) {
         console.error(error);
       }
     };
 
     getData();
-  }, [dispatch, name, symbol, decimals, totalSupply, address]);
+  }, [dispatch, name, symbol, decimals, totalSupply, addressToken]);
 
   const handleDisconect = (): void => {
     disconnect();
@@ -141,7 +150,22 @@ const DashboardContent: React.FC = () => {
     return <Navigate to="/*" />;
   }
 
-  return (
+  return isLoadingComponent ? (
+    <Box
+      sx={{
+        height: window.innerHeight,
+        display: 'flex',
+        justifyContent: 'center',
+        p: 1,
+        m: 1,
+        bgcolor: 'background.paper',
+        borderRadius: 1,
+        alignItems: 'center'
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  ) : (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
@@ -245,6 +269,38 @@ const DashboardContent: React.FC = () => {
                   <Orders />
                 </Paper>
               </Grid>
+              {/* Balance Of */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <BalanceOf />
+                </Paper>
+              </Grid>
+              {/* transfer */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <TransferComponent />
+                </Paper>
+              </Grid>
+              {/* allowance */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <AllowanceComponent />
+                </Paper>
+              </Grid>
+              {/* approve */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <ApproveComponent />
+                </Paper>
+              </Grid>
+              {/* transferFrom */}
+              {/* increaseAllowance */}
+              {/* decreaseAllowance */}
+              {/* mint */}
+              {/* burn */}
+              {/* burnFrom */}
+              {/* disableMaxSupply */}
+              {/* enableMaxSupply */}
             </Grid>
           </Container>
         </Box>

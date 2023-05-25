@@ -7,7 +7,7 @@ import { LabelAndText } from 'components/LabelAndText';
 
 import { useCustomSelector, useCustomDispatch } from 'hooks/redux';
 import {
-  setAddress,
+  setAddressToken,
   setDecimals,
   setName,
   setSymbol,
@@ -18,17 +18,13 @@ export const HomeView: React.FC = () => {
   const [network, setNetwork] = useState('');
 
   const {
-    tokenBNB: { address, name, symbol, decimals, totalSupply }
+    tokenBNB: { addressToken, name, symbol, decimals, totalSupply }
   } = useCustomSelector((state) => state);
 
   const dispatch = useCustomDispatch();
 
   useEffect(() => {
-    const temp =
-      network === 'matic-mumbai'
-        ? myToken.address_matic
-        : myToken.address_goerli;
-    dispatch(setAddress(temp));
+    dispatch(setAddressToken(myToken.address));
     setNetwork(network);
   }, [network, dispatch]);
 
@@ -49,7 +45,7 @@ export const HomeView: React.FC = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
 
-      const contract = new ethers.Contract(address, myToken.abi, signer);
+      const contract = new ethers.Contract(addressToken, myToken.abi, signer);
 
       const tempName = await contract.name();
       const tempSymbol = await contract.symbol();
@@ -81,8 +77,8 @@ export const HomeView: React.FC = () => {
       {network.length > 0 && (
         <LabelAndText title="Network:" subtitle={network} />
       )}
-      {address.length > 0 && (
-        <LabelAndText title="Address:" subtitle={address} />
+      {addressToken.length > 0 && (
+        <LabelAndText title="Address:" subtitle={addressToken} />
       )}
       {name.length > 0 && <LabelAndText title="Name:" subtitle={name} />}
       {symbol.length > 0 && <LabelAndText title="Symbol:" subtitle={symbol} />}

@@ -2,14 +2,14 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 export interface ITokenBNB {
   name: string;
-  address: string;
+  addressToken: string;
   symbol: string;
   decimals: string;
   totalSupply: string;
 }
 
 const initialState: ITokenBNB = {
-  address: '',
+  addressToken: '',
   decimals: '',
   name: '',
   symbol: '',
@@ -20,8 +20,8 @@ const tokenSlice = createSlice({
   name: 'tokenBNB',
   initialState,
   reducers: {
-    setAddress: (state, action: PayloadAction<string>) => {
-      state.address = action.payload;
+    setAddressToken: (state, action: PayloadAction<string>) => {
+      state.addressToken = action.payload;
     },
     setDecimals: (state, action: PayloadAction<string>) => {
       state.decimals = action.payload;
@@ -38,7 +38,12 @@ const tokenSlice = createSlice({
   }
 });
 
-export const { setAddress, setDecimals, setName, setSymbol, setTotalSupply } =
-  tokenSlice.actions;
+export const {
+  setAddressToken,
+  setDecimals,
+  setName,
+  setSymbol,
+  setTotalSupply
+} = tokenSlice.actions;
 
 export default tokenSlice.reducer;

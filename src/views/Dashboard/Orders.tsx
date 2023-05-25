@@ -26,10 +26,10 @@ const preventDefault = (event: React.MouseEvent): void => {
 
 export const Orders: React.FC = () => {
   const {
-    tokenBNB: { address, name, symbol, decimals, totalSupply }
+    tokenBNB: { addressToken, name, symbol, decimals, totalSupply }
   } = useCustomSelector((state) => state);
   const rows = [
-    createData(0, 'Address', address),
+    createData(0, 'Address', addressToken),
     createData(1, 'Name', name),
     createData(2, 'Symbol', symbol),
     createData(3, 'Decimals', decimals),
