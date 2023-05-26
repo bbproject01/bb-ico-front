@@ -42,6 +42,7 @@ import BalanceOf from './BalanceOf';
 import TransferComponent from './TransferComponent';
 import AllowanceComponent from './AllowanceComponent';
 import ApproveComponent from './ApproveComponent';
+import TransferFromComponent from './TransferFromComponent';
 
 const drawerWidth: number = 240;
 
@@ -294,6 +295,11 @@ const DashboardContent: React.FC = () => {
                 </Paper>
               </Grid>
               {/* transferFrom */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <TransferFromComponent />
+                </Paper>
+              </Grid>
               {/* increaseAllowance */}
               {/* decreaseAllowance */}
               {/* mint */}
