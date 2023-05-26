@@ -43,6 +43,7 @@ import TransferComponent from './TransferComponent';
 import AllowanceComponent from './AllowanceComponent';
 import ApproveComponent from './ApproveComponent';
 import TransferFromComponent from './TransferFromComponent';
+import IncreaseAllowanceComponent from './IncreaseAllowanceComponent';
 
 const drawerWidth: number = 240;
 
@@ -137,6 +138,7 @@ const DashboardContent: React.FC = () => {
         setIsLoadingComponent(false);
       } catch (error) {
         console.error(error);
+        setIsLoadingComponent(false);
       }
     };
 
@@ -301,6 +303,11 @@ const DashboardContent: React.FC = () => {
                 </Paper>
               </Grid>
               {/* increaseAllowance */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <IncreaseAllowanceComponent />
+                </Paper>
+              </Grid>
               {/* decreaseAllowance */}
               {/* mint */}
               {/* burn */}
