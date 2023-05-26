@@ -3,6 +3,7 @@ import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 import { useTransferFromToken } from 'hooks/useTransferFromToken';
 import { isValidEthereumAddress } from 'utils/ethereum';
+import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
 // import { useTransferToken } from 'hooks/useTransferToken';
 // import { useCustomDispatch } from 'hooks/redux';
 // import {
@@ -65,7 +66,9 @@ export const TransferFromComponent = (): JSX.Element => {
 
   console.log('data: ', data);
 
-  return (
+  return isLoading ? (
+    <CircularProgressBarBox />
+  ) : (
     <React.Fragment>
       <Title title={'Transfer from'}></Title>
       <TextField

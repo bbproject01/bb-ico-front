@@ -44,6 +44,11 @@ import AllowanceComponent from './AllowanceComponent';
 import ApproveComponent from './ApproveComponent';
 import TransferFromComponent from './TransferFromComponent';
 import IncreaseAllowanceComponent from './IncreaseAllowanceComponent';
+import DecreaseAllowanceComponent from './DecreaseAllowanceComponent';
+import MintComponent from './MintComponent';
+import BurnComponent from './BurnComponent';
+import BurnFromComponent from './BurnFromComponent';
+import MaxSupplyComponent from './MaxSupplyComponent';
 
 const drawerWidth: number = 240;
 
@@ -272,6 +277,13 @@ const DashboardContent: React.FC = () => {
                   <Orders />
                 </Paper>
               </Grid>
+              {/* disableMaxSupply */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <MaxSupplyComponent />
+                </Paper>
+              </Grid>
+              {/* enableMaxSupply */}
               {/* Balance Of */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
@@ -309,11 +321,29 @@ const DashboardContent: React.FC = () => {
                 </Paper>
               </Grid>
               {/* decreaseAllowance */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <DecreaseAllowanceComponent />
+                </Paper>
+              </Grid>
               {/* mint */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <MintComponent />
+                </Paper>
+              </Grid>
               {/* burn */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <BurnComponent />
+                </Paper>
+              </Grid>
               {/* burnFrom */}
-              {/* disableMaxSupply */}
-              {/* enableMaxSupply */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <BurnFromComponent />
+                </Paper>
+              </Grid>
             </Grid>
           </Container>
         </Box>

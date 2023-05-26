@@ -10,6 +10,7 @@ import {
   useWaitForTransaction
 } from 'wagmi';
 import { myToken } from 'service/web3Service';
+import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
 
 export const TransferComponent = (): JSX.Element => {
   const [to, setTo] = useState<string>('');
@@ -58,7 +59,9 @@ export const TransferComponent = (): JSX.Element => {
     }
   };
 
-  return (
+  return isLoading ? (
+    <CircularProgressBarBox />
+  ) : (
     <React.Fragment>
       <Title title={'Transfer'}></Title>
       <TextField

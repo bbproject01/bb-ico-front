@@ -2,38 +2,22 @@ import React, { useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 import { isValidEthereumAddress } from 'utils/ethereum';
-// import { useTransferToken } from 'hooks/useTransferToken';
-// import { useCustomDispatch } from 'hooks/redux';
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction
-} from 'wagmi';
-import { myToken } from 'service/web3Service';
+import { useContractWriteCustom } from 'hooks/useContractWriteCustom';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
 
-export const ApproveComponent = (): JSX.Element => {
-  const [to, setTo] = useState<string>('');
+export const BurnFromComponent = (): JSX.Element => {
+  const [account, setAccount] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
 
   const [isValid, setIsValid] = useState<boolean>(false);
-
-  const { config } = usePrepareContractWrite({
-    address: '0x5080b3ab6a3B5e8893F085B33696d74d1377B5c8',
-    abi: myToken.abi,
-    functionName: 'approve',
-    args: [to, amount],
-    enabled: isValid
-  });
-
-  const { data, write } = useContractWrite(config);
-
-  const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash
-  });
+  const [data, isLoading, isSuccess, write] = useContractWriteCustom(
+    isValid,
+    'burnFrom',
+    [account, amount]
+  );
 
   const handleButtonClic = (): void => {
-    if (isValidEthereumAddress(to) && amount > 0) {
+    if (isValidEthereumAddress(account) && amount > 0) {
       setIsValid(true);
       write?.();
     } else {
@@ -42,10 +26,10 @@ export const ApproveComponent = (): JSX.Element => {
   };
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleChangeAddressTo = (
+  const handleChangeAddressSpender = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setTo(event.target.value);
+    setAccount(event.target.value);
   };
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -59,37 +43,39 @@ export const ApproveComponent = (): JSX.Element => {
     }
   };
 
+  console.log('data: ', data);
+
   return isLoading ? (
     <CircularProgressBarBox />
   ) : (
     <React.Fragment>
-      <Title title={'Approve'}></Title>
+      <Title title={'Burn From'}></Title>
       <TextField
         id="filled-basic"
-        label="Address"
+        label="Cuenta a eliminar tokens"
         variant="filled"
-        onChange={handleChangeAddressTo}
-        value={to}
+        onChange={handleChangeAddressSpender}
+        value={account}
       />
       <TextField
         id="filled-basic"
         type="number"
-        label="Amount"
+        label="Eliminar la cantidad de:"
         variant="filled"
         onChange={handleChangeAmount}
         value={amount}
       />
       <Button sx={{ mt: 2 }} variant="contained" onClick={handleButtonClic}>
-        Agregar
+        Enviar
       </Button>
       <Typography sx={{ mt: 2 }}>
-        {isLoading ? 'Approving...' : 'Approve'}
+        {isLoading ? 'Burning...' : 'Burn'}
       </Typography>
       {isSuccess && (
-        <Typography sx={{ mt: 2 }}>Tokens approve to {to}</Typography>
+        <Typography sx={{ mt: 2 }}>Tokens Send to {account}</Typography>
       )}
     </React.Fragment>
   );
 };
 
-export default ApproveComponent;
+export default BurnFromComponent;
