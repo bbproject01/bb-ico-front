@@ -8,20 +8,20 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import HomeIcon from '@mui/icons-material/Home';
 import ArticleIcon from '@mui/icons-material/Article';
 import { Divider, List } from '@mui/material';
+import { setSelectedMenuOption } from 'store/Dashboard';
+import { useCustomDispatch } from 'hooks/redux';
 
 export const NavBarComponents: React.FC = () => {
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const dispatch = useCustomDispatch();
 
   const handleListItemClick = (index: number): void => {
-    setSelectedIndex(index);
-    console.log(index);
+    dispatch(setSelectedMenuOption(index));
   };
 
   return (
     <React.Fragment>
       <List component="nav">
         <ListItemButton
-          selected={selectedIndex === 0}
           onClick={() => {
             handleListItemClick(0);
           }}
@@ -32,7 +32,6 @@ export const NavBarComponents: React.FC = () => {
           <ListItemText primary="Home" />
         </ListItemButton>
         <ListItemButton
-          selected={selectedIndex === 1}
           onClick={() => {
             handleListItemClick(1);
           }}
@@ -43,7 +42,6 @@ export const NavBarComponents: React.FC = () => {
           <ListItemText primary="Token ERC20" />
         </ListItemButton>
         <ListItemButton
-          selected={selectedIndex === 2}
           onClick={() => {
             handleListItemClick(2);
           }}
@@ -51,7 +49,7 @@ export const NavBarComponents: React.FC = () => {
           <ListItemIcon>
             <ArticleIcon />
           </ListItemIcon>
-          <ListItemText primary="ERC721" />
+          <ListItemText primary="ERC1155" />
         </ListItemButton>
         <Divider sx={{ my: 1 }} />
         <ListSubheader component="div" inset>

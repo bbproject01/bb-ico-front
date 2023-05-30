@@ -8,10 +8,11 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
+import Title from 'components/Title/Title';
 
 const mdTheme = createTheme();
 
-export const ERC721Component: React.FC = () => {
+export const ERC1155Component: React.FC = () => {
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -30,20 +31,12 @@ export const ERC721Component: React.FC = () => {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={12}>
-              {/* ERC721 */}
-              <Grid item xs={12} md={6} lg={8}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240
-                  }}
-                >
-                  <Typography>ERC721</Typography>
-                </Paper>
-              </Grid>
+            {/* disableMaxSupply */}
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                <Title title={'ERC1155'}></Title>
+                <Typography sx={{ mt: 2 }}>ERC1155</Typography>
+              </Paper>
             </Grid>
           </Container>
         </Box>

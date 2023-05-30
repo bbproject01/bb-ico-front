@@ -32,6 +32,7 @@ import { useAccount, useDisconnect } from 'wagmi';
 import { Navigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import { ERC20Component } from './ERC20Component';
+import { ERC1155Component } from 'views/ERC1155/ERC1155Component';
 
 const drawerWidth: number = 240;
 
@@ -89,13 +90,16 @@ const mdTheme = createTheme();
 const DashboardContent: React.FC = () => {
   const [isLoadingComponent, setIsLoadingComponent] = useState<boolean>(true);
   const { isConnected } = useAccount();
-  // const [balanceOf, setBalanceOf] = useState<string>('');
+  const [bodyComponent, setBodyComponent] = useState<JSX.Element>(
+    <Typography>Home</Typography>
+  );
   const [open, setOpen] = useState(true);
   const toggleDrawer = (): void => {
     setOpen(!open);
   };
   const {
-    tokenBNB: { addressToken, name, symbol, decimals, totalSupply }
+    tokenBNB: { addressToken, name, symbol, decimals, totalSupply },
+    dashboard: { selectedMenuOption }
   } = useCustomSelector((state) => state);
   const { disconnect } = useDisconnect();
 
@@ -132,6 +136,20 @@ const DashboardContent: React.FC = () => {
 
     getData();
   }, [dispatch, name, symbol, decimals, totalSupply, addressToken]);
+
+  useEffect(() => {
+    switch (selectedMenuOption) {
+      case 1:
+        setBodyComponent(<ERC20Component />);
+        break;
+      case 2:
+        setBodyComponent(<ERC1155Component />);
+        break;
+      default:
+        setBodyComponent(<Typography>Home</Typography>);
+        break;
+    }
+  }, [selectedMenuOption]);
 
   const handleDisconect = (): void => {
     disconnect();
@@ -209,7 +227,7 @@ const DashboardContent: React.FC = () => {
           <Divider />
           <NavBarComponents />
         </Drawer>
-        <ERC20Component />
+        {bodyComponent}
       </Box>
     </ThemeProvider>
   );

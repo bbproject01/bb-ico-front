@@ -2,10 +2,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 
 import tokenSlice from './TokenBNB';
+import dashboardSlice from './Dashboard';
 
 const store = configureStore({
   reducer: {
-    tokenBNB: tokenSlice
+    tokenBNB: tokenSlice,
+    dashboard: dashboardSlice
   }
 });
 
