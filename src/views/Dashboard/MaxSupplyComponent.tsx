@@ -28,8 +28,6 @@ export const MaxSupplyComponent = (): JSX.Element => {
     write?.();
   };
 
-  console.log('data: ', data);
-
   return isLoading ? (
     <CircularProgressBarBox />
   ) : (
@@ -39,6 +37,9 @@ export const MaxSupplyComponent = (): JSX.Element => {
         {!isActivate ? 'Activar' : 'Desactivar'}
       </Button>
       <Typography sx={{ mt: 2 }}>{isLoading ? 'Is loading...' : ''}</Typography>
+      <Typography sx={{ mt: 2 }}>
+        {data !== undefined ? data.hash : ''}
+      </Typography>
       {isSuccess && <Typography sx={{ mt: 2 }}>{metodERC20}</Typography>}
     </React.Fragment>
   );

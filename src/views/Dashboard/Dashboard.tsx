@@ -9,22 +9,15 @@ import MuiAppBar, {
   type AppBarProps as MuiAppBarProps
 } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 // import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 // import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
-import Deposits from './Deposits';
-import Orders from './Orders';
+import { NavBarComponents } from './listItems';
 import { useCustomDispatch, useCustomSelector } from 'hooks/redux';
 import {
   setAddressToken,
@@ -38,17 +31,7 @@ import { myToken } from 'service/web3Service';
 import { useAccount, useDisconnect } from 'wagmi';
 import { Navigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
-import BalanceOf from './BalanceOf';
-import TransferComponent from './TransferComponent';
-import AllowanceComponent from './AllowanceComponent';
-import ApproveComponent from './ApproveComponent';
-import TransferFromComponent from './TransferFromComponent';
-import IncreaseAllowanceComponent from './IncreaseAllowanceComponent';
-import DecreaseAllowanceComponent from './DecreaseAllowanceComponent';
-import MintComponent from './MintComponent';
-import BurnComponent from './BurnComponent';
-import BurnFromComponent from './BurnFromComponent';
-import MaxSupplyComponent from './MaxSupplyComponent';
+import { ERC20Component } from './ERC20Component';
 
 const drawerWidth: number = 240;
 
@@ -202,7 +185,7 @@ const DashboardContent: React.FC = () => {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Home
             </Typography>
             <IconButton color="inherit" onClick={handleDisconect}>
               <Typography> Logout </Typography>
@@ -224,129 +207,9 @@ const DashboardContent: React.FC = () => {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
-          </List>
+          <NavBarComponents />
         </Drawer>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto'
-          }}
-        >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={6} lg={8}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240
-                  }}
-                >
-                  <Deposits />
-                </Paper>
-              </Grid>
-              {/* Chart */}
-              <Grid item xs={12} md={6} lg={4}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240
-                  }}
-                >
-                  <Chart />
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
-                </Paper>
-              </Grid>
-              {/* disableMaxSupply */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <MaxSupplyComponent />
-                </Paper>
-              </Grid>
-              {/* enableMaxSupply */}
-              {/* Balance Of */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <BalanceOf />
-                </Paper>
-              </Grid>
-              {/* transfer */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <TransferComponent />
-                </Paper>
-              </Grid>
-              {/* allowance */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <AllowanceComponent />
-                </Paper>
-              </Grid>
-              {/* approve */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <ApproveComponent />
-                </Paper>
-              </Grid>
-              {/* transferFrom */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <TransferFromComponent />
-                </Paper>
-              </Grid>
-              {/* increaseAllowance */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <IncreaseAllowanceComponent />
-                </Paper>
-              </Grid>
-              {/* decreaseAllowance */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <DecreaseAllowanceComponent />
-                </Paper>
-              </Grid>
-              {/* mint */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <MintComponent />
-                </Paper>
-              </Grid>
-              {/* burn */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <BurnComponent />
-                </Paper>
-              </Grid>
-              {/* burnFrom */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <BurnFromComponent />
-                </Paper>
-              </Grid>
-            </Grid>
-          </Container>
-        </Box>
+        <ERC20Component />
       </Box>
     </ThemeProvider>
   );

@@ -43,8 +43,6 @@ export const IncreaseAllowanceComponent = (): JSX.Element => {
     }
   };
 
-  console.log('data: ', data);
-
   return isLoading ? (
     <CircularProgressBarBox />
   ) : (
@@ -70,6 +68,9 @@ export const IncreaseAllowanceComponent = (): JSX.Element => {
       </Button>
       <Typography sx={{ mt: 2 }}>
         {isLoading ? 'Increasing...' : 'Increase'}
+      </Typography>
+      <Typography sx={{ mt: 2 }}>
+        {data !== undefined ? data.hash : ''}
       </Typography>
       {isSuccess && (
         <Typography sx={{ mt: 2 }}>Tokens Send to {spender}</Typography>

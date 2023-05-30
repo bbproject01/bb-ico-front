@@ -34,8 +34,6 @@ export const BurnComponent = (): JSX.Element => {
     }
   };
 
-  console.log('data: ', data);
-
   return isLoading ? (
     <CircularProgressBarBox />
   ) : (
@@ -54,6 +52,9 @@ export const BurnComponent = (): JSX.Element => {
       </Button>
       <Typography sx={{ mt: 2 }}>
         {isLoading ? 'Burnning...' : 'Burn'}
+      </Typography>
+      <Typography sx={{ mt: 2 }}>
+        {data !== undefined ? data.hash : ''}
       </Typography>
       {isSuccess && <Typography sx={{ mt: 2 }}>Tokens deleted</Typography>}
     </React.Fragment>

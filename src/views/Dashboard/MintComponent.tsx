@@ -43,8 +43,6 @@ export const MintComponent = (): JSX.Element => {
     }
   };
 
-  console.log('data: ', data);
-
   return isLoading ? (
     <CircularProgressBarBox />
   ) : (
@@ -70,6 +68,9 @@ export const MintComponent = (): JSX.Element => {
       </Button>
       <Typography sx={{ mt: 2 }}>
         {isLoading ? 'Minting...' : 'Mint'}
+      </Typography>
+      <Typography sx={{ mt: 2 }}>
+        {data !== undefined ? data.hash : ''}
       </Typography>
       {isSuccess && (
         <Typography sx={{ mt: 2 }}>Tokens Send to {account}</Typography>

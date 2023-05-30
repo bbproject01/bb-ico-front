@@ -64,8 +64,6 @@ export const TransferFromComponent = (): JSX.Element => {
     }
   };
 
-  console.log('data: ', data);
-
   return isLoading ? (
     <CircularProgressBarBox />
   ) : (
@@ -98,6 +96,9 @@ export const TransferFromComponent = (): JSX.Element => {
       </Button>
       <Typography sx={{ mt: 2 }}>
         {isLoading ? 'Transfering...' : 'Transfer'}
+      </Typography>
+      <Typography sx={{ mt: 2 }}>
+        {data !== undefined ? data.hash : ''}
       </Typography>
       {isSuccess && <Typography sx={{ mt: 2 }}>Tokens Send to {to}</Typography>}
     </React.Fragment>
