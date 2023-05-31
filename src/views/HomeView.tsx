@@ -24,7 +24,7 @@ export const HomeView: React.FC = () => {
   const dispatch = useCustomDispatch();
 
   useEffect(() => {
-    dispatch(setAddressToken(myToken.address));
+    dispatch(setAddressToken(myToken.goerli));
     setNetwork(network);
   }, [network, dispatch]);
 

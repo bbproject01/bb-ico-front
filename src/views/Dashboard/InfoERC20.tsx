@@ -24,16 +24,17 @@ const preventDefault = (event: React.MouseEvent): void => {
   event.preventDefault();
 };
 
-export const Orders: React.FC = () => {
+export const InfoERC20: React.FC = () => {
   const {
-    tokenBNB: { addressToken, name, symbol, decimals, totalSupply }
+    tokenBNB: { addressToken, name, symbol, decimals, totalSupply, owner }
   } = useCustomSelector((state) => state);
   const rows = [
     createData(0, 'Address', addressToken),
     createData(1, 'Name', name),
     createData(2, 'Symbol', symbol),
     createData(3, 'Decimals', decimals),
-    createData(4, 'Total Supply', totalSupply)
+    createData(4, 'Total Supply', totalSupply),
+    createData(5, 'Owner', owner)
   ];
 
   return (
@@ -61,5 +62,3 @@ export const Orders: React.FC = () => {
     </React.Fragment>
   );
 };
-
-export default Orders;

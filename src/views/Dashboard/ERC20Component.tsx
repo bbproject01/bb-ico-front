@@ -7,20 +7,21 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Chart from './Chart';
+import { NetworkComponent } from './NetworkComponent';
 import Deposits from './Deposits';
-import Orders from './Orders';
+import { InfoERC20 } from './InfoERC20';
 import { useCustomDispatch, useCustomSelector } from 'hooks/redux';
 import {
   setAddressToken,
   // setAddress,
   setDecimals,
   setName,
+  setOwner,
   setSymbol,
   setTotalSupply
 } from 'store/TokenBNB';
 import { myToken } from 'service/web3Service';
-import { useAccount } from 'wagmi';
+import { useAccount, useNetwork } from 'wagmi';
 import { Navigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import BalanceOf from './BalanceOf';
@@ -34,17 +35,14 @@ import MintComponent from './MintComponent';
 import BurnComponent from './BurnComponent';
 import BurnFromComponent from './BurnFromComponent';
 import MaxSupplyComponent from './MaxSupplyComponent';
+import Title from 'components/Title/Title';
 
 const mdTheme = createTheme();
 
 export const ERC20Component: React.FC = () => {
   const [isLoadingComponent, setIsLoadingComponent] = useState<boolean>(true);
   const { isConnected } = useAccount();
-  // const [balanceOf, setBalanceOf] = useState<string>('');
-  //   const [open, setOpen] = useState(true);
-  //   const toggleDrawer = (): void => {
-  //     setOpen(!open);
-  //   };
+  const { chain, chains } = useNetwork();
   const {
     tokenBNB: { addressToken, name, symbol, decimals, totalSupply }
   } = useCustomSelector((state) => state);
@@ -55,26 +53,33 @@ export const ERC20Component: React.FC = () => {
   useEffect(() => {
     const getData = async (): Promise<void> => {
       try {
-        setIsLoadingComponent(true);
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          myToken.address,
-          myToken.abi,
-          signer
-        );
+        if (chain !== null) {
+          let addTemp = '0x';
+          if (chain?.name === 'Goerli') {
+            addTemp = myToken.goerli;
+          } else if (chain?.name === 'Polygon Mumbai') {
+            addTemp = myToken.mumbai;
+          }
+          console.log(addTemp);
+          setIsLoadingComponent(true);
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const signer = provider.getSigner();
+          const contract = new ethers.Contract(addTemp, myToken.abi, signer);
 
-        const tempName = await contract.name();
-        const tempSymbol = await contract.symbol();
-        const tempDecimals = await contract.decimals();
-        const tempTotalSupply = await contract.totalSupply();
+          const tempName = await contract.name();
+          const tempSymbol = await contract.symbol();
+          const tempDecimals = await contract.decimals();
+          const tempTotalSupply = await contract.totalSupply();
+          const tempOwner = await contract.owner();
 
-        dispatch(setName(tempName.toString()));
-        dispatch(setSymbol(tempSymbol.toString()));
-        dispatch(setDecimals(tempDecimals.toString()));
-        dispatch(setTotalSupply(tempTotalSupply.toString()));
-        dispatch(setAddressToken(myToken.address));
-        setIsLoadingComponent(false);
+          dispatch(setName(tempName.toString()));
+          dispatch(setSymbol(tempSymbol.toString()));
+          dispatch(setDecimals(tempDecimals.toString()));
+          dispatch(setTotalSupply(tempTotalSupply.toString()));
+          dispatch(setAddressToken(addTemp));
+          dispatch(setOwner(tempOwner));
+          setIsLoadingComponent(false);
+        }
       } catch (error) {
         console.error(error);
         setIsLoadingComponent(false);
@@ -82,7 +87,7 @@ export const ERC20Component: React.FC = () => {
     };
 
     getData();
-  }, [dispatch, name, symbol, decimals, totalSupply, addressToken]);
+  }, [dispatch, name, symbol, decimals, totalSupply, addressToken, chain]);
 
   //   const handleDisconect = (): void => {
   //     disconnect();
@@ -149,13 +154,16 @@ export const ERC20Component: React.FC = () => {
                     height: 240
                   }}
                 >
-                  <Chart />
+                  <NetworkComponent
+                    network={chain?.name}
+                    address={addressToken}
+                  />
                 </Paper>
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
+                  <InfoERC20 />
                 </Paper>
               </Grid>
               {/* disableMaxSupply */}
@@ -226,6 +234,13 @@ export const ERC20Component: React.FC = () => {
                 </Paper>
               </Grid>
             </Grid>
+            {chain != null && <Title title={`Connected to ${chain.name}`} />}
+            {
+              // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+              chains && (
+                <div>Available chains: {chains.map((chain) => chain.name)}</div>
+              )
+            }
           </Container>
         </Box>
       </Box>

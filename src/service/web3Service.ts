@@ -11,7 +11,7 @@ import { InjectedConnector } from 'wagmi/connectors/injected';
 import { publicProvider } from 'wagmi/providers/public';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [polygonMumbai, goerli, mainnet],
+  [goerli, polygonMumbai, mainnet],
   [
     jsonRpcProvider({
       rpc: () => ({
@@ -42,16 +42,22 @@ const config = createConfig({
 // /**
 //  *  Addres de los contratos
 //  */
+const ADDRESS_CONTRACT_TOKEN_BNB_GOERLI =
+  process.env.ADDRESS_CONTRACT_TOKEN_BNB_GOERLI ??
+  '0x6B8b0A858A48E4870A047E97bDD3e5d897d8d0fE';
+
 const ADDRESS_CONTRACT_TOKEN_BNB_MATIC =
   process.env.ADDRESS_CONTRACT_TOKEN_BNB_MATIC ??
-  '0x5080b3ab6a3B5e8893F085B33696d74d1377B5c8';
+  '0x692CBc136E2eF0BC9ebfa57A53F66F210171d7A3';
 
 const ADDRESS_CONTRACT_ERC1155_BNB_MATIC =
   process.env.ADDRESS_CONTRACT_ERC1155_BNB_MATIC ??
   '0xa790F4938e4Daf439674085C0c335C0eb49aE5e4';
 
 const myToken = {
-  address: ADDRESS_CONTRACT_TOKEN_BNB_MATIC,
+  goerli: ADDRESS_CONTRACT_TOKEN_BNB_GOERLI,
+  mumbai: ADDRESS_CONTRACT_TOKEN_BNB_MATIC,
+  // address: ADDRESS_CONTRACT_TOKEN_BNB_MATIC,
   abi: myTokenBNBABI
 };
 

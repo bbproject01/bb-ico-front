@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { BigNumber } from 'ethers';
 
 export interface ITokenBNB {
   name: string;
@@ -6,6 +7,9 @@ export interface ITokenBNB {
   symbol: string;
   decimals: string;
   totalSupply: string;
+  owner: string;
+  balanceFrom: BigNumber;
+  balance: BigNumber;
 }
 
 const initialState: ITokenBNB = {
@@ -13,7 +17,10 @@ const initialState: ITokenBNB = {
   decimals: '',
   name: '',
   symbol: '',
-  totalSupply: ''
+  totalSupply: '',
+  owner: '',
+  balance: BigNumber.from(0),
+  balanceFrom: BigNumber.from(0)
 };
 
 const tokenSlice = createSlice({
@@ -34,6 +41,15 @@ const tokenSlice = createSlice({
     },
     setTotalSupply: (state, action: PayloadAction<string>) => {
       state.totalSupply = action.payload;
+    },
+    setOwner: (state, action: PayloadAction<string>) => {
+      state.owner = action.payload;
+    },
+    setBalance: (state, action: PayloadAction<BigNumber>) => {
+      state.balance = action.payload;
+    },
+    setBalanceFrom: (state, action: PayloadAction<BigNumber>) => {
+      state.balanceFrom = action.payload;
     }
   }
 });
@@ -43,7 +59,10 @@ export const {
   setDecimals,
   setName,
   setSymbol,
-  setTotalSupply
+  setTotalSupply,
+  setOwner,
+  setBalance,
+  setBalanceFrom
 } = tokenSlice.actions;
 
 export default tokenSlice.reducer;

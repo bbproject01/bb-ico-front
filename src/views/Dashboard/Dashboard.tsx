@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
+// import { ethers } from 'ethers';
 // import { ethers, getDefaultProvider } from 'ethers';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,19 +18,19 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 // import NotificationsIcon from '@mui/icons-material/Notifications';
 import { NavBarComponents } from './listItems';
-import { useCustomDispatch, useCustomSelector } from 'hooks/redux';
-import {
-  setAddressToken,
-  // setAddress,
-  setDecimals,
-  setName,
-  setSymbol,
-  setTotalSupply
-} from 'store/TokenBNB';
-import { myToken } from 'service/web3Service';
+import { useCustomSelector } from 'hooks/redux';
+// import {
+//   setAddressToken,
+//   // setAddress,
+//   setDecimals,
+//   setName,
+//   setSymbol,
+//   setTotalSupply
+// } from 'store/TokenBNB';
+// import { myToken } from 'service/web3Service';
 import { useAccount, useDisconnect } from 'wagmi';
 import { Navigate } from 'react-router-dom';
-import { CircularProgress } from '@mui/material';
+// import { CircularProgress } from '@mui/material';
 import { ERC20Component } from './ERC20Component';
 import { ERC1155Component } from 'views/ERC1155/ERC1155Component';
 
@@ -88,7 +88,7 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 const DashboardContent: React.FC = () => {
-  const [isLoadingComponent, setIsLoadingComponent] = useState<boolean>(true);
+  // const [isLoadingComponent, setIsLoadingComponent] = useState<boolean>(true);
   const { isConnected } = useAccount();
   const [bodyComponent, setBodyComponent] = useState<JSX.Element>(
     <Typography>Home</Typography>
@@ -98,44 +98,44 @@ const DashboardContent: React.FC = () => {
     setOpen(!open);
   };
   const {
-    tokenBNB: { addressToken, name, symbol, decimals, totalSupply },
+    // tokenBNB: { addressToken, name, symbol, decimals, totalSupply },
     dashboard: { selectedMenuOption }
   } = useCustomSelector((state) => state);
   const { disconnect } = useDisconnect();
 
-  const dispatch = useCustomDispatch();
+  // const dispatch = useCustomDispatch();
 
-  useEffect(() => {
-    const getData = async (): Promise<void> => {
-      try {
-        setIsLoadingComponent(true);
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          myToken.address,
-          myToken.abi,
-          signer
-        );
+  // useEffect(() => {
+  //   const getData = async (): Promise<void> => {
+  //     try {
+  //       setIsLoadingComponent(true);
+  //       const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //       const signer = provider.getSigner();
+  //       const contract = new ethers.Contract(
+  //         myToken.address,
+  //         myToken.abi,
+  //         signer
+  //       );
 
-        const tempName = await contract.name();
-        const tempSymbol = await contract.symbol();
-        const tempDecimals = await contract.decimals();
-        const tempTotalSupply = await contract.totalSupply();
+  //       const tempName = await contract.name();
+  //       const tempSymbol = await contract.symbol();
+  //       const tempDecimals = await contract.decimals();
+  //       const tempTotalSupply = await contract.totalSupply();
 
-        dispatch(setName(tempName.toString()));
-        dispatch(setSymbol(tempSymbol.toString()));
-        dispatch(setDecimals(tempDecimals.toString()));
-        dispatch(setTotalSupply(tempTotalSupply.toString()));
-        dispatch(setAddressToken(myToken.address));
-        setIsLoadingComponent(false);
-      } catch (error) {
-        console.error(error);
-        setIsLoadingComponent(false);
-      }
-    };
+  //       dispatch(setName(tempName.toString()));
+  //       dispatch(setSymbol(tempSymbol.toString()));
+  //       dispatch(setDecimals(tempDecimals.toString()));
+  //       dispatch(setTotalSupply(tempTotalSupply.toString()));
+  //       dispatch(setAddressToken(myToken.address));
+  //       setIsLoadingComponent(false);
+  //     } catch (error) {
+  //       console.error(error);
+  //       setIsLoadingComponent(false);
+  //     }
+  //   };
 
-    getData();
-  }, [dispatch, name, symbol, decimals, totalSupply, addressToken]);
+  //   getData();
+  // }, [dispatch, name, symbol, decimals, totalSupply, addressToken]);
 
   useEffect(() => {
     switch (selectedMenuOption) {
@@ -159,22 +159,7 @@ const DashboardContent: React.FC = () => {
     return <Navigate to="/*" />;
   }
 
-  return isLoadingComponent ? (
-    <Box
-      sx={{
-        height: window.innerHeight,
-        display: 'flex',
-        justifyContent: 'center',
-        p: 1,
-        m: 1,
-        bgcolor: 'background.paper',
-        borderRadius: 1,
-        alignItems: 'center'
-      }}
-    >
-      <CircularProgress />
-    </Box>
-  ) : (
+  return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />

@@ -1,18 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 import { isValidEthereumAddress } from 'utils/ethereum';
-import { useBalanceOf } from 'hooks/useBalanceToken';
+import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
+import { useContractReadERC20 } from 'hooks/useContractReadERC20';
+// import { useBalanceOf } from 'hooks/useBalanceToken';
+// import { useCustomSelector } from 'hooks/redux';
 
 export const BalanceOf = (): JSX.Element => {
   const [value, setValue] = useState<string>('');
   const [address, setAddress] = useState<string>('');
+  const [isValid, setIsValid] = useState<boolean>(false);
+  // const {
+  //   tokenBNB: { balanceFrom }
+  // } = useCustomSelector((state) => state);
 
-  const _balance = useBalanceOf(address);
+  const [_balance, isLoading, isSuccess] = useContractReadERC20(
+    isValid,
+    'balanceOf',
+    [address]
+  );
+  // const [isLoading, isSuccess] = useBalanceOf(address, isValid);
+
+  useEffect(() => {
+    if (isLoading) {
+      setIsValid(false);
+    }
+  }, [isLoading]);
 
   const handleButtonClic = (): void => {
     if (isValidEthereumAddress(value)) {
       setAddress(value);
+      setIsValid(true);
     }
   };
 
@@ -23,7 +42,9 @@ export const BalanceOf = (): JSX.Element => {
     setValue(event.target.value);
   };
 
-  return (
+  return isLoading ? (
+    <CircularProgressBarBox />
+  ) : (
     <React.Fragment>
       <Title title={'Balance Of'}></Title>
       <TextField
@@ -36,8 +57,13 @@ export const BalanceOf = (): JSX.Element => {
       <Button sx={{ mt: 2 }} variant="contained" onClick={handleButtonClic}>
         Consultar
       </Button>
-      <Typography sx={{ mt: 2 }}>Resultado: </Typography>
-      <Typography sx={{ mt: 2 }}>{_balance.toString()}</Typography>
+      {isSuccess && (
+        <>
+          <Typography sx={{ mt: 2 }}>Resultado: </Typography>
+          {/* <Typography sx={{ mt: 2 }}>{balanceFrom.toString()}</Typography> */}
+          <Typography sx={{ mt: 2 }}>{_balance.toString()}</Typography>
+        </>
+      )}
     </React.Fragment>
   );
 };

@@ -1,49 +1,77 @@
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { useState, useEffect } from 'react';
 import { myToken } from 'service/web3Service';
-import { isValidEthereumAddress } from 'utils/ethereum';
-import { useContractRead } from 'wagmi';
+// import { isValidEthereumAddress } from 'utils/ethereum';
+// import { useContractRead } from 'wagmi';
+import { useCustomDispatch } from './redux';
+import { setBalanceFrom } from 'store/TokenBNB';
+import { useNetwork } from 'wagmi';
 
-export function useBalanceOf(input: string): [BigNumber] {
-  const [value, setValue] = useState<BigNumber>(BigNumber.from('0'));
-  const [isValid, setIsValid] = useState<boolean>(false);
+export function useBalanceOf(
+  input: string,
+  isValid: boolean
+): [boolean, boolean] {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const { chain } = useNetwork();
+  const dispatch = useCustomDispatch();
 
   useEffect(() => {
-    const callData = (): void => {
-      if (isValidEthereumAddress(input)) {
-        setIsValid(true);
-      } else {
-        setIsValid(false);
-        setValue(BigNumber.from(input));
+    if (isValid) {
+      try {
+        if (chain !== null) {
+          const callData = async (): Promise<void> => {
+            setIsLoading(true);
+            const addressContract =
+              '0x6B8b0A858A48E4870A047E97bDD3e5d897d8d0fE';
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(
+              addressContract,
+              myToken.abi,
+              signer
+            );
+            console.log(input);
+            const tempBalance = await contract.balanceOf(input);
+            console.log(tempBalance);
+            console.log('bignumber: ', BigNumber.from(tempBalance));
+            console.log(typeof tempBalance);
+            dispatch(setBalanceFrom(BigNumber.from(tempBalance)));
+            setIsLoading(false);
+            setIsSuccess(true);
+          };
+          callData();
+        }
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
       }
-    };
-
-    if (input !== '') callData();
-  }, [input]);
-
-  /**
-   * WEB3
-   */
-  // node ENS
-  useContractRead({
-    address: '0x5080b3ab6a3B5e8893F085B33696d74d1377B5c8',
-    abi: myToken.abi,
-    enabled: isValid,
-    functionName: 'balanceOf',
-    args: [input],
-    onSuccess(data: any) {
-      if (data === '') {
-        setValue(BigNumber.from('0'));
-      } else {
-        // const withDecimals = data / BigInt(1000000000000000000);
-
-        setValue(BigNumber.from(data));
-      }
-    },
-    onError(error) {
-      console.log('ERROR:', error);
     }
-  });
+  }, [chain, dispatch, input, isValid]);
 
-  return [value];
+  // /**
+  //  * WEB3
+  //  */
+  // // node ENS
+  // useContractRead({
+  //   address: '0x6B8b0A858A48E4870A047E97bDD3e5d897d8d0fE',
+  //   abi: myToken.abi,
+  //   enabled: isValid,
+  //   functionName: 'balanceOf',
+  //   args: [input],
+  //   onSuccess(data: any) {
+  //     if (data === '') {
+  //       setValue(BigNumber.from('0'));
+  //     } else {
+  //       // const withDecimals = data / BigInt(1000000000000000000);
+
+  //       setValue(BigNumber.from(data));
+  //     }
+  //   },
+  //   onError(error) {
+  //     console.log('ERROR:', error);
+  //   }
+  // });
+
+  return [isLoading, isSuccess];
 }
