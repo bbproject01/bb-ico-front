@@ -7,8 +7,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { Typography } from '@mui/material';
-import Title from 'components/Title/Title';
+import { RevisedReturnPeriodComponent } from './RevisedReturnPeriodComponent';
+import { ERC20TokenComponent } from './ERC20TokenComponent';
+import { TokenIDCounterComponent } from './TokenIDCounterComponent';
+import { BalanceOfComponent } from './BalanceOfComponent';
+import { FNFTMetadataComponent } from './FNFTMetadataComponent';
+import { IsApprovedForAllComponent } from './IsApprovedForAllComponent';
+import { UriComponent } from './UriComponent';
 
 const mdTheme = createTheme();
 
@@ -31,12 +36,49 @@ export const ERC1155Component: React.FC = () => {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            {/* disableMaxSupply */}
-            <Grid item xs={12} md={12} lg={12}>
-              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Title title={'ERC1155'}></Title>
-                <Typography sx={{ mt: 2 }}>ERC1155</Typography>
-              </Paper>
+            <Grid container spacing={3}>
+              {/* erc20Token */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <ERC20TokenComponent />
+                </Paper>
+              </Grid>
+              {/* TokenIdCounter */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <TokenIDCounterComponent />
+                </Paper>
+              </Grid>
+              {/* balanceOF */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <BalanceOfComponent />
+                </Paper>
+              </Grid>
+              {/* FNFTMetadataComponent */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <FNFTMetadataComponent />
+                </Paper>
+              </Grid>
+              {/* IsApprovedForAllComponent */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <IsApprovedForAllComponent />
+                </Paper>
+              </Grid>
+              {/* revisedReturnPeriod */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <RevisedReturnPeriodComponent />
+                </Paper>
+              </Grid>
+              {/* Uri */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <UriComponent />
+                </Paper>
+              </Grid>
             </Grid>
           </Container>
         </Box>
