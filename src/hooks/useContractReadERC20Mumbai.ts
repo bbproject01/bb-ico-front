@@ -1,7 +1,7 @@
 import { myToken } from 'service/web3Service';
 import { useContractRead } from 'wagmi';
 
-export function useContractReadERC20(
+export function useContractReadERC20Mumbai(
   isValid: boolean,
   functionName: string,
   args: any[]
@@ -9,7 +9,7 @@ export function useContractReadERC20(
   data: any | undefined,
   isLoading: boolean,
   isSuccess: boolean,
-  write: string,
+  status: string,
   error: Error | null
 ] {
   /**

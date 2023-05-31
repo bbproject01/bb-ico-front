@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 import { isValidEthereumAddress } from 'utils/ethereum';
-import { useBalanceOf } from 'hooks/useBalanceToken';
+import { useContractReadERC20Mumbai } from 'hooks/useContractReadERC20Mumbai';
+import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
 
 export const BalanceOf = (): JSX.Element => {
-  const [value, setValue] = useState<string>('');
+  const [isValid, setIsValid] = useState<boolean>(false);
   const [address, setAddress] = useState<string>('');
 
-  const _balance = useBalanceOf(address);
+  const [data, isLoading, isSuccess, status] = useContractReadERC20Mumbai(
+    isValid,
+    'balanceOf',
+    [address]
+  );
+
+  useEffect(() => {
+    if (isSuccess) {
+      setIsValid(false);
+    }
+  }, [isSuccess]);
 
   const handleButtonClic = (): void => {
-    if (isValidEthereumAddress(value)) {
-      setAddress(value);
+    if (isValidEthereumAddress(address)) {
+      setIsValid(true);
     }
   };
 
@@ -20,10 +31,12 @@ export const BalanceOf = (): JSX.Element => {
   const handleChangeValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setValue(event.target.value);
+    setAddress(event.target.value);
   };
 
-  return (
+  return isLoading ? (
+    <CircularProgressBarBox />
+  ) : (
     <React.Fragment>
       <Title title={'Balance Of'}></Title>
       <TextField
@@ -31,13 +44,17 @@ export const BalanceOf = (): JSX.Element => {
         label="Address"
         variant="filled"
         onChange={handleChangeValue}
-        value={value}
+        value={address}
       />
       <Button sx={{ mt: 2 }} variant="contained" onClick={handleButtonClic}>
         Consultar
       </Button>
-      <Typography sx={{ mt: 2 }}>Resultado: </Typography>
-      <Typography sx={{ mt: 2 }}>{_balance.toString()}</Typography>
+      {isSuccess && (
+        <>
+          <Typography sx={{ mt: 2 }}>Resultado:{status} </Typography>
+          <Typography sx={{ mt: 2 }}>{data.toString()}</Typography>
+        </>
+      )}
     </React.Fragment>
   );
 };

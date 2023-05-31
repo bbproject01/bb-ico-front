@@ -1,20 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 import { isValidEthereumAddress } from 'utils/ethereum';
 import { useAccount } from 'wagmi';
-import { useAllowanceToken } from 'hooks/useAllowanceToken';
+import { useContractReadERC20Mumbai } from 'hooks/useContractReadERC20Mumbai';
+import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
 
 export const AllowanceComponent = (): JSX.Element => {
-  const { address = '0x' } = useAccount();
-  const [value, setValue] = useState<string>('');
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const { address: owner = '0x' } = useAccount();
   const [spender, setSpender] = useState<string>('');
 
-  const _allowance = useAllowanceToken(address, spender);
+  const [data, isLoading, isSuccess, status] = useContractReadERC20Mumbai(
+    isValid,
+    'balanceOf',
+    [owner, spender]
+  );
+
+  useEffect(() => {
+    if (isSuccess) {
+      setIsValid(false);
+    }
+  }, [isSuccess]);
 
   const handleButtonClic = (): void => {
-    if (isValidEthereumAddress(value)) {
-      setSpender(value);
+    if (isValidEthereumAddress(spender)) {
+      setIsValid(true);
     }
   };
 
@@ -22,10 +33,12 @@ export const AllowanceComponent = (): JSX.Element => {
   const handleChangeValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setValue(event.target.value);
+    setSpender(event.target.value);
   };
 
-  return (
+  return isLoading ? (
+    <CircularProgressBarBox />
+  ) : (
     <React.Fragment>
       <Title title={'Allowance'}></Title>
       <TextField
@@ -33,13 +46,17 @@ export const AllowanceComponent = (): JSX.Element => {
         label="Address"
         variant="filled"
         onChange={handleChangeValue}
-        value={value}
+        value={spender}
       />
       <Button sx={{ mt: 2 }} variant="contained" onClick={handleButtonClic}>
         Consultar
       </Button>
-      <Typography sx={{ mt: 2 }}>Resultado: </Typography>
-      <Typography sx={{ mt: 2 }}>{_allowance.toString()}</Typography>
+      {isSuccess && (
+        <>
+          <Typography sx={{ mt: 2 }}>Resultado:{status} </Typography>
+          <Typography sx={{ mt: 2 }}>{data.toString()}</Typography>
+        </>
+      )}
     </React.Fragment>
   );
 };

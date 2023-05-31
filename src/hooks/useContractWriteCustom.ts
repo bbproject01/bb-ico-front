@@ -24,7 +24,7 @@ export function useContractWriteCustom(
    * WEB3
    */
   const { config } = usePrepareContractWrite({
-    address: '0x5080b3ab6a3B5e8893F085B33696d74d1377B5c8',
+    address: '0x62ba02826ef23F4ce9Ac11B72CB31Aadb85878F9',
     abi: myToken.abi,
     functionName,
     args,
