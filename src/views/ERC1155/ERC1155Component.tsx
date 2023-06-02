@@ -14,6 +14,7 @@ import { BalanceOfComponent } from './BalanceOfComponent';
 import { FNFTMetadataComponent } from './FNFTMetadataComponent';
 import { IsApprovedForAllComponent } from './IsApprovedForAllComponent';
 import { UriComponent } from './UriComponent';
+import { MintFNFTComponent } from './MintComponent';
 
 const mdTheme = createTheme();
 
@@ -65,6 +66,12 @@ export const ERC1155Component: React.FC = () => {
               <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <IsApprovedForAllComponent />
+                </Paper>
+              </Grid>
+              {/* IsApprovedForAllComponent */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <MintFNFTComponent />
                 </Paper>
               </Grid>
               {/* revisedReturnPeriod */}
