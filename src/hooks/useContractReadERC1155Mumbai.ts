@@ -17,8 +17,7 @@ export function useContractReadERC1155Mumbai(
    */
   // node ENS
   const { data, error, isLoading, isSuccess, status } = useContractRead({
-    address: '0x50b987C93278fef1e273c02B7E300feA469ED246',
-    abi: FNFT.abi,
+    ...FNFT,
     enabled: isValid,
     functionName,
     args

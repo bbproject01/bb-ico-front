@@ -1,27 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 import { isValidEthereumAddress } from 'utils/ethereum';
-import { useContractWriteCustom } from 'hooks/useContractWriteCustom';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
+import { myToken } from 'service/web3Service';
+import { useContractWrite } from 'wagmi';
 
 export const MintComponent = (): JSX.Element => {
   const [account, setAccount] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
-  const [isValid, setIsValid] = useState<boolean>(false);
-  const [data, isLoading, isSuccess, write] = useContractWriteCustom(
-    isValid,
-    'mint',
-    [account, amount]
-  );
+  const { data, isLoading, isSuccess, write } = useContractWrite({
+    ...myToken,
+    functionName: 'mint'
+  });
+
+  useEffect(() => {
+    if (isValidEthereumAddress(account) && amount > 0) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [account, amount]);
 
   const handleButtonClic = (): void => {
     if (isValidEthereumAddress(account) && amount > 0) {
-      setIsValid(true);
-      write?.();
-    } else {
-      setIsValid(false);
+      write({
+        args: [account, amount]
+      });
     }
   };
 
@@ -63,7 +70,12 @@ export const MintComponent = (): JSX.Element => {
         onChange={handleChangeAmount}
         value={amount}
       />
-      <Button sx={{ mt: 2 }} variant="contained" onClick={handleButtonClic}>
+      <Button
+        sx={{ mt: 2 }}
+        variant="contained"
+        onClick={handleButtonClic}
+        disabled={!isDisabled}
+      >
         Enviar
       </Button>
       <Typography sx={{ mt: 2 }}>

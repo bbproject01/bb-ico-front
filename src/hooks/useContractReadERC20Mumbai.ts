@@ -17,8 +17,7 @@ export function useContractReadERC20Mumbai(
    */
   // node ENS
   const { data, error, isLoading, isSuccess, status } = useContractRead({
-    address: '0x62ba02826ef23F4ce9Ac11B72CB31Aadb85878F9',
-    abi: myToken.abi,
+    ...myToken,
     enabled: isValid,
     functionName,
     args

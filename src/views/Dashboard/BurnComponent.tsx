@@ -1,25 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
-import { useContractWriteCustom } from 'hooks/useContractWriteCustom';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
+import { useContractWrite } from 'wagmi';
+import { myToken } from 'service/web3Service';
 
 export const BurnComponent = (): JSX.Element => {
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [amount, setAmount] = useState<number>(0);
 
-  const [isValid, setIsValid] = useState<boolean>(false);
-  const [data, isLoading, isSuccess, write] = useContractWriteCustom(
-    isValid,
-    'burn',
-    [amount]
-  );
+  const { data, isLoading, isSuccess, write } = useContractWrite({
+    ...myToken,
+    functionName: 'burn'
+  });
+
+  useEffect(() => {
+    if (amount > 0) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [amount]);
 
   const handleButtonClic = (): void => {
     if (amount > 0) {
-      setIsValid(true);
-      write?.();
-    } else {
-      setIsValid(false);
+      write({ args: [amount] });
     }
   };
 
@@ -47,7 +52,12 @@ export const BurnComponent = (): JSX.Element => {
         onChange={handleChangeAmount}
         value={amount}
       />
-      <Button sx={{ mt: 2 }} variant="contained" onClick={handleButtonClic}>
+      <Button
+        sx={{ mt: 2 }}
+        variant="contained"
+        onClick={handleButtonClic}
+        disabled={!isDisabled}
+      >
         Enviar
       </Button>
       <Typography sx={{ mt: 2 }}>

@@ -1,23 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Title from './Title';
-import { useCustomSelector } from 'hooks/redux';
+import { useAccount, useContractRead } from 'wagmi';
+import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
+import { myToken } from 'service/web3Service';
+import { BigNumber } from 'ethers';
 
 const preventDefault = (event: React.MouseEvent): void => {
   event.preventDefault();
 };
 
 export const Deposits: React.FC = () => {
-  const {
-    tokenBNB: { totalSupply }
-  } = useCustomSelector((state) => state);
+  const { address = '0x' } = useAccount();
+  const [data, setData] = useState<BigNumber>(BigNumber.from(0));
 
-  return (
+  const { isLoading } = useContractRead({
+    ...myToken,
+    functionName: 'balanceOf',
+    args: [address],
+    onSuccess(data) {
+      setData(BigNumber.from(data));
+      console.log('Success', data);
+    }
+  });
+
+  return isLoading ? (
+    <CircularProgressBarBox />
+  ) : (
     <React.Fragment>
-      <Title title="Total Supply"></Title>
+      <Title title="Balance"></Title>
       <Typography component="p" variant="h4">
-        {totalSupply}
+        {data.toString()}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
         on 15 March, 2019

@@ -1,43 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 import { isValidEthereumAddress } from 'utils/ethereum';
-// import { useTransferToken } from 'hooks/useTransferToken';
-// import { useCustomDispatch } from 'hooks/redux';
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction
-} from 'wagmi';
+import { useContractWrite } from 'wagmi';
 import { myToken } from 'service/web3Service';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
 
 export const TransferComponent = (): JSX.Element => {
   const [to, setTo] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
-  const [isValid, setIsValid] = useState<boolean>(false);
-
-  const { config } = usePrepareContractWrite({
-    address: '0x5080b3ab6a3B5e8893F085B33696d74d1377B5c8',
-    abi: myToken.abi,
+  const { data, isLoading, isSuccess, write } = useContractWrite({
+    ...myToken,
     functionName: 'transfer',
-    args: [to, amount],
-    enabled: isValid
+    args: [to, amount]
   });
 
-  const { data, write } = useContractWrite(config);
-
-  const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash
-  });
+  useEffect(() => {
+    if (isValidEthereumAddress(to) && amount > 0) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [to, amount]);
 
   const handleButtonClic = (): void => {
     if (isValidEthereumAddress(to) && amount > 0) {
-      setIsValid(true);
-      write?.();
-    } else {
-      setIsValid(false);
+      write({
+        args: [to, amount]
+      });
     }
   };
 
@@ -79,13 +71,22 @@ export const TransferComponent = (): JSX.Element => {
         onChange={handleChangeAmount}
         value={amount}
       />
-      <Button sx={{ mt: 2 }} variant="contained" onClick={handleButtonClic}>
+      <Button
+        sx={{ mt: 2 }}
+        variant="contained"
+        onClick={handleButtonClic}
+        disabled={!isDisabled}
+      >
         Enviar
       </Button>
       <Typography sx={{ mt: 2 }}>
         {isLoading ? 'Transfering...' : 'Transfer'}
       </Typography>
-      {isSuccess && <Typography sx={{ mt: 2 }}>Tokens Send to {to}</Typography>}
+      {isSuccess && (
+        <Typography sx={{ mt: 2 }}>
+          Tokens Send to {to} - {data?.hash ?? ''}
+        </Typography>
+      )}
     </React.Fragment>
   );
 };

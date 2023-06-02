@@ -9,6 +9,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 
 import { publicProvider } from 'wagmi/providers/public';
+import { getAddress } from 'viem';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [polygonMumbai],
@@ -44,19 +45,19 @@ const config = createConfig({
 //  */
 const ADDRESS_CONTRACT_TOKEN_BNB_MATIC =
   process.env.ADDRESS_CONTRACT_TOKEN_BNB_MATIC ??
-  '0x62ba02826ef23F4ce9Ac11B72CB31Aadb85878F9';
+  `0x62ba02826ef23F4ce9Ac11B72CB31Aadb85878F9`;
 
 const ADDRESS_CONTRACT_FNFT_BNB_MATIC =
   process.env.ADDRESS_CONTRACT_FNFT_BNB_MATIC ??
   '0x50b987C93278fef1e273c02B7E300feA469ED246';
 
 const myToken = {
-  address: ADDRESS_CONTRACT_TOKEN_BNB_MATIC,
+  address: getAddress(ADDRESS_CONTRACT_TOKEN_BNB_MATIC),
   abi: myTokenBNBABI
 };
 
 const FNFT = {
-  address: ADDRESS_CONTRACT_FNFT_BNB_MATIC,
+  address: getAddress(ADDRESS_CONTRACT_FNFT_BNB_MATIC),
   abi: myFNFTABI
 };
 

@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 import { isValidEthereumAddress } from 'utils/ethereum';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
-import { useContractWriteCustom } from 'hooks/useContractWriteCustom';
-// import { useTransferToken } from 'hooks/useTransferToken';
-// import { useCustomDispatch } from 'hooks/redux';
-// import {
-//   useContractWrite,
-//   usePrepareContractWrite,
-//   useWaitForTransaction
-// } from 'wagmi';
-// import { myToken } from 'service/web3Service';
+import { useContractWrite } from 'wagmi';
+import { myToken } from 'service/web3Service';
 
 export const TransferFromComponent = (): JSX.Element => {
   const [sender, setSender] = useState<string>('');
   const [to, setTo] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
-  const [isValid, setIsValid] = useState<boolean>(false);
-  const [data, isLoading, isSuccess, write] = useContractWriteCustom(
-    isValid,
-    'transferFrom',
-    [sender, to, amount]
-  );
+  const { data, isLoading, isSuccess, write } = useContractWrite({
+    ...myToken,
+    functionName: 'transferFrom'
+  });
+
+  useEffect(() => {
+    if (isValidEthereumAddress(to) && amount > 0) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [to, amount]);
 
   const handleButtonClic = (): void => {
     if (
@@ -31,10 +31,7 @@ export const TransferFromComponent = (): JSX.Element => {
       isValidEthereumAddress(to) &&
       amount > 0
     ) {
-      setIsValid(true);
-      write?.();
-    } else {
-      setIsValid(false);
+      write({ args: [sender, to, amount] });
     }
   };
 
@@ -90,7 +87,12 @@ export const TransferFromComponent = (): JSX.Element => {
         onChange={handleChangeAmount}
         value={amount}
       />
-      <Button sx={{ mt: 2 }} variant="contained" onClick={handleButtonClic}>
+      <Button
+        sx={{ mt: 2 }}
+        variant="contained"
+        onClick={handleButtonClic}
+        disabled={!isDisabled}
+      >
         Enviar
       </Button>
       <Typography sx={{ mt: 2 }}>

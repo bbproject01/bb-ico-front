@@ -33,22 +33,18 @@ import DecreaseAllowanceComponent from './DecreaseAllowanceComponent';
 import MintComponent from './MintComponent';
 import BurnComponent from './BurnComponent';
 import BurnFromComponent from './BurnFromComponent';
-import MaxSupplyComponent from './MaxSupplyComponent';
+import { MaxSupplyDisabledComponent } from './MaxSupplyDisabledComponent';
+import MaxSupplyEnabledComponent from './MaxSupplyEnabledComponent';
 
 const mdTheme = createTheme();
 
 export const ERC20Component: React.FC = () => {
   const [isLoadingComponent, setIsLoadingComponent] = useState<boolean>(true);
   const { isConnected } = useAccount();
-  // const [balanceOf, setBalanceOf] = useState<string>('');
-  //   const [open, setOpen] = useState(true);
-  //   const toggleDrawer = (): void => {
-  //     setOpen(!open);
-  //   };
+
   const {
     tokenBNB: { addressToken, name, symbol, decimals, totalSupply }
   } = useCustomSelector((state) => state);
-  //   const { disconnect } = useDisconnect();
 
   const dispatch = useCustomDispatch();
 
@@ -83,10 +79,6 @@ export const ERC20Component: React.FC = () => {
 
     getData();
   }, [dispatch, name, symbol, decimals, totalSupply, addressToken]);
-
-  //   const handleDisconect = (): void => {
-  //     disconnect();
-  //   };
 
   if (!isConnected) {
     return <Navigate to="/*" />;
@@ -158,25 +150,6 @@ export const ERC20Component: React.FC = () => {
                   <Orders />
                 </Paper>
               </Grid>
-              {/* disableMaxSupply */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <MaxSupplyComponent />
-                </Paper>
-              </Grid>
-              {/* enableMaxSupply */}
-              {/* Balance Of */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <BalanceOf />
-                </Paper>
-              </Grid>
-              {/* transfer */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <TransferComponent />
-                </Paper>
-              </Grid>
               {/* allowance */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
@@ -189,28 +162,10 @@ export const ERC20Component: React.FC = () => {
                   <ApproveComponent />
                 </Paper>
               </Grid>
-              {/* transferFrom */}
+              {/* Balance Of */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <TransferFromComponent />
-                </Paper>
-              </Grid>
-              {/* increaseAllowance */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <IncreaseAllowanceComponent />
-                </Paper>
-              </Grid>
-              {/* decreaseAllowance */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <DecreaseAllowanceComponent />
-                </Paper>
-              </Grid>
-              {/* mint */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <MintComponent />
+                  <BalanceOf />
                 </Paper>
               </Grid>
               {/* burn */}
@@ -223,6 +178,48 @@ export const ERC20Component: React.FC = () => {
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <BurnFromComponent />
+                </Paper>
+              </Grid>
+              {/* decreaseAllowance */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <DecreaseAllowanceComponent />
+                </Paper>
+              </Grid>
+              {/* increaseAllowance */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <IncreaseAllowanceComponent />
+                </Paper>
+              </Grid>
+              {/* MaxSupplyDisabledComponent */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <MaxSupplyDisabledComponent />
+                </Paper>
+              </Grid>
+              {/* MaxSupplyEnabledComponent */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <MaxSupplyEnabledComponent />
+                </Paper>
+              </Grid>
+              {/* mint */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <MintComponent />
+                </Paper>
+              </Grid>
+              {/* transfer */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <TransferComponent />
+                </Paper>
+              </Grid>
+              {/* transferFrom */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <TransferFromComponent />
                 </Paper>
               </Grid>
             </Grid>
