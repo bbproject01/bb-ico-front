@@ -33,6 +33,7 @@ import { Navigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import { ERC20Component } from './ERC20Component';
 import { ERC1155Component } from 'views/ERC1155/ERC1155Component';
+import { ERC20EthersComponent } from 'views/ERC20/ERC20EthersComponent';
 
 const drawerWidth: number = 240;
 
@@ -146,7 +147,7 @@ const DashboardContent: React.FC = () => {
         setBodyComponent(<ERC1155Component />);
         break;
       default:
-        setBodyComponent(<Typography>Home</Typography>);
+        setBodyComponent(<ERC20EthersComponent />);
         break;
     }
   }, [selectedMenuOption]);
