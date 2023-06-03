@@ -75,7 +75,7 @@ export const ApproveComponent = (): JSX.Element => {
       >
         Consultar
       </Button>
-      {isSuccess != null ? 'Se realizo la transaccion' : ''}
+      {isSuccess ? 'Se realizo la transaccion' : ''}
     </React.Fragment>
   );
 };
