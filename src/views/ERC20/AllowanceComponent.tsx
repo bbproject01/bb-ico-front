@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
-
-import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
-import Title from 'components/Title/Title';
-import { useBalanceEthers } from 'hooks/ERC20/useBalanceEthers';
-import { isValidEthereumAddress } from 'utils/ethereum';
 import { Button, TextField } from '@mui/material';
+import Title from 'components/Title/Title';
+import { isValidEthereumAddress } from 'utils/ethereum';
+import { useAccount } from 'wagmi';
+import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
+import { useAllowanceEthers } from 'hooks/ERC20/useAllowanceEthers';
 
-export const BalanceOfComponent: React.FC = () => {
-  const [isValid, setIsValid] = useState<boolean>(false);
+export const AllowanceComponent = (): JSX.Element => {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const [address, setAddress] = useState<string>('');
-  // const [data, setData] = useState<BigNumber>(BigNumber.from(0));
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const { address: owner = '0x' } = useAccount();
+  const [spender, setSpender] = useState<string>('');
 
-  const [balance, isLoading] = useBalanceEthers(isValid, address);
+  const [allowance, isLoading] = useAllowanceEthers(isValid, owner, spender);
 
   useEffect(() => {
-    if (isValidEthereumAddress(address)) {
+    if (isValidEthereumAddress(spender)) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
-  }, [address]);
+  }, [spender]);
 
   const handleButtonClic = (): void => {
-    if (isValidEthereumAddress(address)) {
+    if (isValidEthereumAddress(spender)) {
       setIsValid(true);
     }
   };
@@ -32,21 +32,20 @@ export const BalanceOfComponent: React.FC = () => {
   const handleChangeValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setIsValid(false);
-    setAddress(event.target.value);
+    setSpender(event.target.value);
   };
 
   return isLoading ? (
     <CircularProgressBarBox />
   ) : (
     <React.Fragment>
-      <Title title={'Balance Of'}></Title>
+      <Title title={'Allowance'}></Title>
       <TextField
         id="filled-basic"
         label="Address"
         variant="filled"
         onChange={handleChangeValue}
-        value={address}
+        value={spender}
       />
       <Button
         sx={{ mt: 2 }}
@@ -56,9 +55,9 @@ export const BalanceOfComponent: React.FC = () => {
       >
         Consultar
       </Button>
-      {balance != null ? balance.toString() : ''}
+      {allowance != null ? allowance.toString() : ''}
     </React.Fragment>
   );
 };
 
-export default BalanceOfComponent;
+export default AllowanceComponent;

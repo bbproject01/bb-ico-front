@@ -10,6 +10,8 @@ import { useAccount } from 'wagmi';
 import { Navigate } from 'react-router-dom';
 import Deposits from './Deposits';
 import BalanceOfComponent from './BalanceOfComponent';
+import AllowanceComponent from './AllowanceComponent';
+import ApproveComponent from './ApproveComponent';
 
 const mdTheme = createTheme();
 
@@ -49,6 +51,18 @@ export const ERC20EthersComponent: React.FC = () => {
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <BalanceOfComponent />
+                </Paper>
+              </Grid>
+              {/* AllowanceComponent */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <AllowanceComponent />
+                </Paper>
+              </Grid>
+              {/* ApproveComponent */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <ApproveComponent />
                 </Paper>
               </Grid>
             </Grid>

@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import { useAccount } from 'wagmi';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
 import Title from 'components/Title/Title';
-import { useBalanceEthers } from 'hooks/useBalanceEthers';
+import { useBalanceEthers } from 'hooks/ERC20/useBalanceEthers';
 
 const preventDefault = (event: React.MouseEvent): void => {
   event.preventDefault();
