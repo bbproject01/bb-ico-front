@@ -31,9 +31,10 @@ import { myToken } from 'service/web3Service';
 import { useAccount, useDisconnect } from 'wagmi';
 import { Navigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
-import { ERC20Component } from './ERC20Component';
-import { ERC1155Component } from 'views/ERC1155/ERC1155Component';
+// import { ERC20Component } from './ERC20Component';
+// import { ERC1155Component } from 'views/ERC1155/ERC1155Component';
 import { ERC20EthersComponent } from 'views/ERC20/ERC20EthersComponent';
+import { HomeView } from 'views/HomeView';
 
 const drawerWidth: number = 240;
 
@@ -141,13 +142,13 @@ const DashboardContent: React.FC = () => {
   useEffect(() => {
     switch (selectedMenuOption) {
       case 1:
-        setBodyComponent(<ERC20Component />);
-        break;
-      case 2:
-        setBodyComponent(<ERC1155Component />);
-        break;
-      default:
         setBodyComponent(<ERC20EthersComponent />);
+        break;
+      // case 2:
+      //   setBodyComponent(<ERC1155Component />);
+      //   break;
+      default:
+        setBodyComponent(<HomeView />);
         break;
     }
   }, [selectedMenuOption]);
