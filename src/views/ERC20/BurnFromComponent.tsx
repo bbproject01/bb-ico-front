@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
-import { isValidEthereumAddress } from 'utils/ethereum';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
-import { useApproveEthers } from 'hooks/ERC20/useApproveEthers';
+import { BigNumber, ethers } from 'ethers';
+import { useBurnFromEthers } from 'hooks/ERC20/useBurnFromEthers';
+import { isValidEthereumAddress } from 'utils/ethereum';
 
-export const ApproveComponent = (): JSX.Element => {
+export const BurnFromComponent = (): JSX.Element => {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isValid, setIsValid] = useState<boolean>(false);
-  const [spender, setSpender] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
+  const [amountBigNumber, setAmountBigNumber] = useState<BigNumber>(
+    BigNumber.from('0')
+  );
+  const [account, setAccount] = useState<string>('');
 
-  const [isLoading, isSuccess] = useApproveEthers(isValid, spender, amount);
+  const [isLoading, isSuccess] = useBurnFromEthers(
+    isValid,
+    account,
+    amountBigNumber
+  );
 
   useEffect(() => {
     if (isSuccess) {
@@ -20,16 +28,25 @@ export const ApproveComponent = (): JSX.Element => {
   }, [isSuccess]);
 
   useEffect(() => {
-    if (isValidEthereumAddress(spender) && amount > 0) {
+    if (isValidEthereumAddress(account) && amount > 0) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
-  }, [spender, amount]);
+  }, [account, amount]);
 
   const handleButtonClic = (): void => {
-    if (isValidEthereumAddress(spender) && amount > 0) {
-      setIsValid(true);
+    try {
+      if (Number(amount) > 0) {
+        // console.log(amount.toFixed(18));
+        const numberString = ethers.utils.parseUnits(amount.toFixed(18));
+        setAmountBigNumber(numberString);
+        // console.log(numberString.toString());
+        // console.log('Entro aqui');
+        setIsValid(true);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -44,20 +61,20 @@ export const ApproveComponent = (): JSX.Element => {
   const handleChangeSpender = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setSpender(event.target.value);
+    setAccount(event.target.value);
   };
 
   return isLoading ? (
     <CircularProgressBarBox />
   ) : (
     <React.Fragment>
-      <Title title={'Approve'}></Title>
+      <Title title={'Burn from'}></Title>
       <TextField
         id="filled-basic"
-        label="Address"
+        label="Account"
         variant="filled"
         onChange={handleChangeSpender}
-        value={spender}
+        value={account}
       />
       <TextField
         id="filled-basic"
@@ -81,4 +98,4 @@ export const ApproveComponent = (): JSX.Element => {
   );
 };
 
-export default ApproveComponent;
+export default BurnFromComponent;

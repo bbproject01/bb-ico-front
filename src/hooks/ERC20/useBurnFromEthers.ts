@@ -1,12 +1,12 @@
-import { ethers } from 'ethers';
-import { parseUnits } from 'ethers/lib/utils';
+import { type BigNumber, ethers } from 'ethers';
+// import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { myToken } from 'service/web3Service';
 
-export function useApproveEthers(
+export function useBurnFromEthers(
   isValid: boolean,
-  address: string,
-  amount: number
+  account: string,
+  amount: BigNumber
 ): [isLoading: boolean, isSuccess: boolean] {
   const [isSuccess, setIsSucces] = useState<boolean>(false);
   const [isLoading, setIsLoadingComponent] = useState<boolean>(false);
@@ -26,11 +26,7 @@ export function useApproveEthers(
             myToken.abi,
             signer
           );
-
-          const tx = await contract.approve(
-            address,
-            parseUnits(amount.toFixed(18).toString())
-          );
+          const tx = await contract.burnFrom(account, amount);
           await tx.wait();
           setIsSucces(true);
           setIsLoadingComponent(false);
@@ -41,7 +37,7 @@ export function useApproveEthers(
       };
       getData();
     }
-  }, [address, amount, isValid]);
+  }, [account, amount, isValid]);
 
   return [isLoading, isSuccess];
 }

@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
-import { isValidEthereumAddress } from 'utils/ethereum';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
-import { useApproveEthers } from 'hooks/ERC20/useApproveEthers';
+import { useBurnEthers } from 'hooks/ERC20/useBurnEthers';
+import { BigNumber, ethers } from 'ethers';
 
-export const ApproveComponent = (): JSX.Element => {
+export const BurnComponent = (): JSX.Element => {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isValid, setIsValid] = useState<boolean>(false);
-  const [spender, setSpender] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
+  const [amountBigNumber, setAmountBigNumber] = useState<BigNumber>(
+    BigNumber.from('0')
+  );
 
-  const [isLoading, isSuccess] = useApproveEthers(isValid, spender, amount);
+  const [isLoading, isSuccess] = useBurnEthers(isValid, amountBigNumber);
 
   useEffect(() => {
     if (isSuccess) {
@@ -20,16 +22,29 @@ export const ApproveComponent = (): JSX.Element => {
   }, [isSuccess]);
 
   useEffect(() => {
-    if (isValidEthereumAddress(spender) && amount > 0) {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
+    try {
+      if (Number(amount) > 0) {
+        setIsDisabled(true);
+      } else {
+        setIsDisabled(false);
+      }
+    } catch (error) {
+      console.log(error);
     }
-  }, [spender, amount]);
+  }, [amount]);
 
   const handleButtonClic = (): void => {
-    if (isValidEthereumAddress(spender) && amount > 0) {
-      setIsValid(true);
+    try {
+      if (Number(amount) > 0) {
+        // console.log(amount.toFixed(18));
+        const numberString = ethers.utils.parseUnits(amount.toFixed(18));
+        setAmountBigNumber(numberString);
+        // console.log(numberString.toString());
+        // console.log('Entro aqui');
+        setIsValid(true);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -40,25 +55,11 @@ export const ApproveComponent = (): JSX.Element => {
     setAmount(Number(event.target.value));
   };
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleChangeSpender = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setSpender(event.target.value);
-  };
-
   return isLoading ? (
     <CircularProgressBarBox />
   ) : (
     <React.Fragment>
-      <Title title={'Approve'}></Title>
-      <TextField
-        id="filled-basic"
-        label="Address"
-        variant="filled"
-        onChange={handleChangeSpender}
-        value={spender}
-      />
+      <Title title={'Burn'}></Title>
       <TextField
         id="filled-basic"
         label="Amount"
@@ -81,4 +82,4 @@ export const ApproveComponent = (): JSX.Element => {
   );
 };
 
-export default ApproveComponent;
+export default BurnComponent;

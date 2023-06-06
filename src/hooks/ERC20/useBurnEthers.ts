@@ -1,12 +1,13 @@
-import { BigNumber, ethers } from 'ethers';
+import { type BigNumber, ethers } from 'ethers';
+// import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { myToken } from 'service/web3Service';
 
 export function useBurnEthers(
   isValid: boolean,
-  address: string
-): [data: BigNumber | undefined, isLoading: boolean] {
-  const [balanceOf, setBalanceOf] = useState<BigNumber>(BigNumber.from(0));
+  amount: BigNumber
+): [isLoading: boolean, isSuccess: boolean] {
+  const [isSuccess, setIsSucces] = useState<boolean>(false);
   const [isLoading, setIsLoadingComponent] = useState<boolean>(false);
   /**
    * WEB3
@@ -24,9 +25,9 @@ export function useBurnEthers(
             myToken.abi,
             signer
           );
-
-          const tempBalance = await contract.balanceOf(address);
-          setBalanceOf(BigNumber.from(tempBalance.toString()));
+          const tx = await contract.burn(amount);
+          await tx.wait();
+          setIsSucces(true);
           setIsLoadingComponent(false);
         } catch (error) {
           console.error(error);
@@ -35,7 +36,7 @@ export function useBurnEthers(
       };
       getData();
     }
-  }, [address, isValid]);
+  }, [amount, isValid]);
 
-  return [balanceOf, isLoading];
+  return [isLoading, isSuccess];
 }

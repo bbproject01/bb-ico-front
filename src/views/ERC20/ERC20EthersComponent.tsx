@@ -12,6 +12,8 @@ import Deposits from './Deposits';
 import BalanceOfComponent from './BalanceOfComponent';
 import AllowanceComponent from './AllowanceComponent';
 import ApproveComponent from './ApproveComponent';
+import BurnComponent from './BurnComponent';
+import BurnFromComponent from './BurnFromComponent';
 
 const mdTheme = createTheme();
 
@@ -65,6 +67,25 @@ export const ERC20EthersComponent: React.FC = () => {
                   <ApproveComponent />
                 </Paper>
               </Grid>
+              {/* BurnComponent */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <BurnComponent />
+                </Paper>
+              </Grid>
+              {/* burnFrom */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <BurnFromComponent />
+                </Paper>
+              </Grid>
+              {/* decreaseAllowance */}
+              {/* increaseAllowance */}
+              {/* MaxSupplyDisabledComponent */}
+              {/* MaxSupplyEnabledComponent */}
+              {/* mint */}
+              {/* transfer */}
+              {/* transferFrom */}
             </Grid>
           </Container>
         </Box>
