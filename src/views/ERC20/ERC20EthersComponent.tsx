@@ -15,6 +15,7 @@ import ApproveComponent from './ApproveComponent';
 import BurnComponent from './BurnComponent';
 import BurnFromComponent from './BurnFromComponent';
 import DecreaseAllowanceComponent from './DecreaseAllowanceComponent';
+import IncreaseAllowanceComponent from './IncreaseAllowanceComponent';
 
 const mdTheme = createTheme();
 
@@ -87,6 +88,11 @@ export const ERC20EthersComponent: React.FC = () => {
                 </Paper>
               </Grid>
               {/* increaseAllowance */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <IncreaseAllowanceComponent />
+                </Paper>
+              </Grid>
               {/* MaxSupplyDisabledComponent */}
               {/* MaxSupplyEnabledComponent */}
               {/* mint */}
