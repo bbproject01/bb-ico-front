@@ -16,6 +16,9 @@ import BurnComponent from './BurnComponent';
 import BurnFromComponent from './BurnFromComponent';
 import DecreaseAllowanceComponent from './DecreaseAllowanceComponent';
 import IncreaseAllowanceComponent from './IncreaseAllowanceComponent';
+import MaxSupplyDisabledComponent from './MaxSupplyDisabledComponent';
+import MaxSupplyEnabledComponent from './MaxSupplyEnabledComponent';
+import MintComponent from './MintComponent';
 
 const mdTheme = createTheme();
 
@@ -94,8 +97,23 @@ export const ERC20EthersComponent: React.FC = () => {
                 </Paper>
               </Grid>
               {/* MaxSupplyDisabledComponent */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <MaxSupplyDisabledComponent />
+                </Paper>
+              </Grid>
               {/* MaxSupplyEnabledComponent */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <MaxSupplyEnabledComponent />
+                </Paper>
+              </Grid>
               {/* mint */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <MintComponent />
+                </Paper>
+              </Grid>
               {/* transfer */}
               {/* transferFrom */}
             </Grid>

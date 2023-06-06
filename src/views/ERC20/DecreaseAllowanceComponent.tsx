@@ -3,7 +3,7 @@ import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 import { isValidEthereumAddress } from 'utils/ethereum';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
-import { useDecreaseAllowanceEthers } from 'hooks/ERC20/useIncreaseAllowanceEthers copy';
+import { useDecreaseAllowanceEthers } from 'hooks/ERC20/useDecreaseAllowanceEthers';
 
 export const DecreaseAllowanceComponent = (): JSX.Element => {
   const [spender, setSpender] = useState<string>('');
