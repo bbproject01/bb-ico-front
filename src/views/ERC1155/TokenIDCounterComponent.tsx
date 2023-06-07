@@ -2,16 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 // import { isValidEthereumAddress } from 'utils/ethereum';
-import { useContractReadERC1155Mumbai } from 'hooks/useContractReadERC1155Mumbai';
+import { useContractERC115 } from 'hooks/useContractERC1155';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
 
 export const TokenIDCounterComponent = (): JSX.Element => {
   const [isValid, setIsValid] = useState<boolean>(false);
   // const [address, setAddress] = useState<string>('');
 
-  const [data, isLoading, isSuccess, status] = useContractReadERC1155Mumbai(
+  // const [data, isLoading, isSuccess, status] = useContractReadERC1155Mumbai(
+  //   isValid,
+  //   'tokenIdCounter',
+  //   []
+  // );
+
+  const [data, isLoading, isSuccess, status] = useContractERC115(
     isValid,
-    'tokenIdCounter',
+    'nextTokenId',
     []
   );
 
