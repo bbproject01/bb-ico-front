@@ -8,7 +8,6 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { BalanceOfComponent } from './BalanceOfComponent';
-import { UriComponent } from './UriComponent';
 import { MintFNFTComponent } from './MintComponent';
 import { TokenIDCounterComponent } from './TokenIDCounterComponent';
 
@@ -40,22 +39,18 @@ export const ERC1155Component: React.FC = () => {
               </Paper>
             </Grid>
             <Grid container spacing={3}>
+              {/* Mint */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper
+                  sx={{ p: 2, display: 'flex', flexDirection: 'column', mt: 2 }}
+                >
+                  <MintFNFTComponent />
+                </Paper>
+              </Grid>
               {/* balanceOF */}
               <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <BalanceOfComponent />
-                </Paper>
-              </Grid>
-              {/* Mint */}
-              <Grid item xs={12} md={12} lg={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <MintFNFTComponent />
-                </Paper>
-              </Grid>
-              {/* Uri */}
-              <Grid item xs={12} md={12} lg={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <UriComponent />
                 </Paper>
               </Grid>
             </Grid>
