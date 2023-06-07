@@ -46,10 +46,12 @@ export function useContractERC115(
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [status, setStatus] = useState<string>('');
   const [error, setError] = useState<Error | null>(null);
-  const [isExecuted, setIsExecuted] = useState<boolean>(false);  // Nuevo estado para seguir el rastro de la ejecución
-  
+  const [isExecuted, setIsExecuted] = useState<boolean>(false); 
+  const [calls, setCalls] = useState(0) // Control Renders calls
+
   useEffect(() => {
     if (isValid) {
+      console.log("Setting isValid to false");
       setIsExecuted(false);
     }
   }, [isValid]);
@@ -83,14 +85,16 @@ export function useContractERC115(
       } finally {
         setIsLoading(false);
         setIsExecuted(true);  
+        setCalls(0);
       }
     };
 
-    if (isValid && !isExecuted){
+    if (isValid && !isExecuted && calls === 0){
+      setCalls((prev)=> prev +1);
       callContractFunction();
     }
 
-  }, [functionName, isExecuted, isValid, parameters]);
+  }, [calls, functionName, isExecuted, isValid, parameters]);
 
   return [result, isLoading, isSuccess, status, error];
 }
