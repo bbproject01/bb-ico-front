@@ -10,6 +10,11 @@ import Paper from '@mui/material/Paper';
 import { BalanceOfComponent } from './BalanceOfComponent';
 import { MintFNFTComponent } from './MintComponent';
 import { TokenIDCounterComponent } from './TokenIDCounterComponent';
+import { OwnedTokensComponent } from './OwnedTokensComponent';
+import { AllowanceCustomERC20Component } from './AllowanceCustomERC20Component';
+import { ApproveCustomERC20Component } from './ApproveCustomERC20Component';
+import { ERC20TokenComponent } from './ERC20TokenComponent';
+import { SetSecurityTokenComponent } from './SetSecurityTokenComponent';
 
 const mdTheme = createTheme();
 
@@ -31,10 +36,27 @@ export const ERC1155Component: React.FC = () => {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+            {/* ApprovedTokens */}
+            <Grid item xs={12} md={12} lg={12}>
+              <Grid item xs={6} md={6} lg={6}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <AllowanceCustomERC20Component />
+                </Paper>
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                <Paper
+                  sx={{ p: 2, display: 'flex', flexDirection: 'column', mt: 2 }}
+                >
+                  <ApproveCustomERC20Component />
+                </Paper>
+              </Grid>
+            </Grid>
             {/* TokenIdCounter */}
             <Grid item xs={12} md={12} lg={12}>
-              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+              <Paper
+                sx={{ p: 2, display: 'flex', flexDirection: 'column', mt: 2 }}
+              >
                 <TokenIDCounterComponent />
               </Paper>
             </Grid>
@@ -51,6 +73,24 @@ export const ERC1155Component: React.FC = () => {
               <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <BalanceOfComponent />
+                </Paper>
+              </Grid>
+              {/* IERC20 */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <ERC20TokenComponent />
+                </Paper>
+              </Grid>
+              {/* SET  IERC20 */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <SetSecurityTokenComponent />
+                </Paper>
+              </Grid>
+              {/* List Tokens */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <OwnedTokensComponent />
                 </Paper>
               </Grid>
             </Grid>
