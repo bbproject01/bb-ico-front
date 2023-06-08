@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
+import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -7,99 +6,32 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Chart from './Chart';
-import Deposits from './Deposits';
-import Orders from './Orders';
-import { useCustomDispatch, useCustomSelector } from 'hooks/redux';
-import {
-  setAddressToken,
-  // setAddress,
-  setDecimals,
-  setName,
-  setSymbol,
-  setTotalSupply
-} from 'store/TokenBNB';
-import { myToken } from 'service/web3Service';
 import { useAccount } from 'wagmi';
 import { Navigate } from 'react-router-dom';
-import { CircularProgress } from '@mui/material';
-import BalanceOf from './BalanceOf';
-import TransferComponent from './TransferComponent';
+import Deposits from './Deposits';
+import BalanceOfComponent from './BalanceOfComponent';
 import AllowanceComponent from './AllowanceComponent';
 import ApproveComponent from './ApproveComponent';
-import TransferFromComponent from './TransferFromComponent';
-import IncreaseAllowanceComponent from './IncreaseAllowanceComponent';
-import DecreaseAllowanceComponent from './DecreaseAllowanceComponent';
-import MintComponent from './MintComponent';
 import BurnComponent from './BurnComponent';
 import BurnFromComponent from './BurnFromComponent';
-import { MaxSupplyDisabledComponent } from './MaxSupplyDisabledComponent';
+import DecreaseAllowanceComponent from './DecreaseAllowanceComponent';
+import IncreaseAllowanceComponent from './IncreaseAllowanceComponent';
+import MaxSupplyDisabledComponent from './MaxSupplyDisabledComponent';
 import MaxSupplyEnabledComponent from './MaxSupplyEnabledComponent';
+import MintComponent from './MintComponent';
+import TransferComponent from './TransferComponent';
+import TransferFromComponent from './TransferFromComponent';
 
 const mdTheme = createTheme();
 
-export const ERC20Component: React.FC = () => {
-  const [isLoadingComponent, setIsLoadingComponent] = useState<boolean>(true);
+export const ERC20EthersComponent: React.FC = () => {
   const { isConnected } = useAccount();
-
-  const {
-    tokenBNB: { addressToken, name, symbol, decimals, totalSupply }
-  } = useCustomSelector((state) => state);
-
-  const dispatch = useCustomDispatch();
-
-  useEffect(() => {
-    const getData = async (): Promise<void> => {
-      try {
-        setIsLoadingComponent(true);
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          myToken.address,
-          myToken.abi,
-          signer
-        );
-
-        const tempName = await contract.name();
-        const tempSymbol = await contract.symbol();
-        const tempDecimals = await contract.decimals();
-        const tempTotalSupply = await contract.totalSupply();
-
-        dispatch(setName(tempName.toString()));
-        dispatch(setSymbol(tempSymbol.toString()));
-        dispatch(setDecimals(tempDecimals.toString()));
-        dispatch(setTotalSupply(tempTotalSupply.toString()));
-        dispatch(setAddressToken(myToken.address));
-        setIsLoadingComponent(false);
-      } catch (error) {
-        console.error(error);
-        setIsLoadingComponent(false);
-      }
-    };
-
-    getData();
-  }, [dispatch, name, symbol, decimals, totalSupply, addressToken]);
 
   if (!isConnected) {
     return <Navigate to="/*" />;
   }
 
-  return isLoadingComponent ? (
-    <Box
-      sx={{
-        height: window.innerHeight,
-        display: 'flex',
-        justifyContent: 'center',
-        p: 1,
-        m: 1,
-        bgcolor: 'background.paper',
-        borderRadius: 1,
-        alignItems: 'center'
-      }}
-    >
-      <CircularProgress />
-    </Box>
-  ) : (
+  return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
@@ -118,57 +50,31 @@ export const ERC20Component: React.FC = () => {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={6} lg={8}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240
-                  }}
-                >
+              {/* Balance Of */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Deposits />
                 </Paper>
               </Grid>
-              {/* Chart */}
-              <Grid item xs={12} md={6} lg={4}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240
-                  }}
-                >
-                  <Chart />
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
+              {/* Balance Of Component */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
+                  <BalanceOfComponent />
                 </Paper>
               </Grid>
-              {/* allowance */}
+              {/* AllowanceComponent */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <AllowanceComponent />
                 </Paper>
               </Grid>
-              {/* approve */}
+              {/* ApproveComponent */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <ApproveComponent />
                 </Paper>
               </Grid>
-              {/* Balance Of */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <BalanceOf />
-                </Paper>
-              </Grid>
-              {/* burn */}
+              {/* BurnComponent */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <BurnComponent />

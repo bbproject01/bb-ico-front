@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextField, Typography } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import Title from 'components/Title/Title';
 import { isValidEthereumAddress } from 'utils/ethereum';
 import { useAccount } from 'wagmi';
-// import { useContractReadERC20Mumbai } from 'hooks/useContractReadERC20Mumbai';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
-import { useContractReadERC20 } from 'hooks/useContractReadERC20';
+import { useAllowanceEthers } from 'hooks/ERC20/useAllowanceEthers';
 
 export const AllowanceComponent = (): JSX.Element => {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -13,11 +12,7 @@ export const AllowanceComponent = (): JSX.Element => {
   const { address: owner = '0x' } = useAccount();
   const [spender, setSpender] = useState<string>('');
 
-  const [data, isLoading, isSuccess, status] = useContractReadERC20(
-    isValid,
-    'allowance',
-    [owner, spender]
-  );
+  const [allowance, isLoading] = useAllowanceEthers(isValid, owner, spender);
 
   useEffect(() => {
     if (isValidEthereumAddress(spender)) {
@@ -26,18 +21,6 @@ export const AllowanceComponent = (): JSX.Element => {
       setIsDisabled(false);
     }
   }, [spender]);
-
-  useEffect(() => {
-    if (!isValidEthereumAddress(spender)) {
-      setIsValid(false);
-    }
-  }, [spender]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      setIsValid(false);
-    }
-  }, [isSuccess]);
 
   const handleButtonClic = (): void => {
     if (isValidEthereumAddress(spender)) {
@@ -72,12 +55,7 @@ export const AllowanceComponent = (): JSX.Element => {
       >
         Consultar
       </Button>
-      {isSuccess && (
-        <>
-          <Typography sx={{ mt: 2 }}>Resultado:{status} </Typography>
-          <Typography sx={{ mt: 2 }}>{data.toString()}</Typography>
-        </>
-      )}
+      {allowance != null ? allowance.toString() : ''}
     </React.Fragment>
   );
 };

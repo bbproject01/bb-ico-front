@@ -7,8 +7,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { Typography } from '@mui/material';
-import Title from 'components/Title/Title';
+import { BalanceOfComponent } from './BalanceOfComponent';
+import { MintFNFTComponent } from './MintComponent';
+import { TokenIDCounterComponent } from './TokenIDCounterComponent';
 
 const mdTheme = createTheme();
 
@@ -31,12 +32,27 @@ export const ERC1155Component: React.FC = () => {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            {/* disableMaxSupply */}
+            {/* TokenIdCounter */}
             <Grid item xs={12} md={12} lg={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Title title={'ERC1155'}></Title>
-                <Typography sx={{ mt: 2 }}>ERC1155</Typography>
+                <TokenIDCounterComponent />
               </Paper>
+            </Grid>
+            <Grid container spacing={3}>
+              {/* Mint */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper
+                  sx={{ p: 2, display: 'flex', flexDirection: 'column', mt: 2 }}
+                >
+                  <MintFNFTComponent />
+                </Paper>
+              </Grid>
+              {/* balanceOF */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <BalanceOfComponent />
+                </Paper>
+              </Grid>
             </Grid>
           </Container>
         </Box>

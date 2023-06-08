@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextField, Typography } from '@mui/material';
-import Title from 'components/Title/Title';
-import { isValidEthereumAddress } from 'utils/ethereum';
-import { useContractReadERC20Mumbai } from 'hooks/useContractReadERC20Mumbai';
-import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
 
-export const BalanceOf = (): JSX.Element => {
+import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
+import Title from 'components/Title/Title';
+import { useBalanceEthers } from 'hooks/ERC20/useBalanceEthers';
+import { isValidEthereumAddress } from 'utils/ethereum';
+import { Button, TextField } from '@mui/material';
+
+export const BalanceOfComponent: React.FC = () => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [address, setAddress] = useState<string>('');
+  // const [data, setData] = useState<BigNumber>(BigNumber.from(0));
 
-  const [data, isLoading, isSuccess, status] = useContractReadERC20Mumbai(
-    isValid,
-    'balanceOf',
-    [address]
-  );
+  const [balance, isLoading] = useBalanceEthers(isValid, address);
 
   useEffect(() => {
     if (isValidEthereumAddress(address)) {
@@ -24,14 +22,10 @@ export const BalanceOf = (): JSX.Element => {
     }
   }, [address]);
 
-  useEffect(() => {
-    if (isSuccess) {
-      setIsValid(false);
-    }
-  }, [isSuccess]);
-
   const handleButtonClic = (): void => {
-    setIsValid(true);
+    if (isValidEthereumAddress(address)) {
+      setIsValid(true);
+    }
   };
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -62,14 +56,9 @@ export const BalanceOf = (): JSX.Element => {
       >
         Consultar
       </Button>
-      {isSuccess && (
-        <>
-          <Typography sx={{ mt: 2 }}>Resultado:{status} </Typography>
-          <Typography sx={{ mt: 2 }}>{data.toString()}</Typography>
-        </>
-      )}
+      {balance != null ? balance.toString() : ''}
     </React.Fragment>
   );
 };
 
-export default BalanceOf;
+export default BalanceOfComponent;

@@ -1,7 +1,7 @@
-import { myToken } from 'service/web3Service';
+import { FNFT } from 'service/web3Service';
 import { useContractRead } from 'wagmi';
 
-export function useContractReadERC20(
+export function useContractReadERC1155Mumbai(
   isValid: boolean,
   functionName: string,
   args: any[]
@@ -9,7 +9,7 @@ export function useContractReadERC20(
   data: any | undefined,
   isLoading: boolean,
   isSuccess: boolean,
-  write: string,
+  status: string,
   error: Error | null
 ] {
   /**
@@ -17,7 +17,7 @@ export function useContractReadERC20(
    */
   // node ENS
   const { data, error, isLoading, isSuccess, status } = useContractRead({
-    ...myToken,
+    ...FNFT,
     enabled: isValid,
     functionName,
     args

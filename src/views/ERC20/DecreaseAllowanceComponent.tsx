@@ -3,18 +3,19 @@ import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 import { isValidEthereumAddress } from 'utils/ethereum';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
-import { myToken } from 'service/web3Service';
-import { useContractWrite } from 'wagmi';
+import { useDecreaseAllowanceEthers } from 'hooks/ERC20/useDecreaseAllowanceEthers';
 
 export const DecreaseAllowanceComponent = (): JSX.Element => {
   const [spender, setSpender] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
+  const [isValid, setIsValid] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
-  const { data, isLoading, isSuccess, write } = useContractWrite({
-    ...myToken,
-    functionName: 'decreaseAllowance'
-  });
+  const [isLoading, isSuccess] = useDecreaseAllowanceEthers(
+    isValid,
+    spender,
+    amount
+  );
 
   useEffect(() => {
     if (isValidEthereumAddress(spender) && amount > 0) {
@@ -26,7 +27,7 @@ export const DecreaseAllowanceComponent = (): JSX.Element => {
 
   const handleButtonClic = (): void => {
     if (isValidEthereumAddress(spender) && amount > 0) {
-      write({ args: [spender, amount] });
+      setIsValid(true);
     }
   };
 
@@ -68,6 +69,7 @@ export const DecreaseAllowanceComponent = (): JSX.Element => {
         onChange={handleChangeAmount}
         value={amount}
       />
+      <Typography sx={{ mt: 2 }}>Numero:{amount.toFixed(18)} </Typography>
       <Button
         sx={{ mt: 2 }}
         variant="contained"
@@ -76,15 +78,7 @@ export const DecreaseAllowanceComponent = (): JSX.Element => {
       >
         Enviar
       </Button>
-      <Typography sx={{ mt: 2 }}>
-        {isLoading ? 'Increasing...' : 'Increase'}
-      </Typography>
-      <Typography sx={{ mt: 2 }}>
-        {data !== undefined ? data.hash : ''}
-      </Typography>
-      {isSuccess && (
-        <Typography sx={{ mt: 2 }}>Tokens Send to {spender}</Typography>
-      )}
+      {isSuccess ? 'Se realizo la transaccion' : ''}
     </React.Fragment>
   );
 };

@@ -1,20 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
-import { isValidEthereumAddress } from 'utils/ethereum';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
-import { myToken } from 'service/web3Service';
-import { useContractWrite } from 'wagmi';
+import { BigNumber, ethers } from 'ethers';
+import { isValidEthereumAddress } from 'utils/ethereum';
+import { useMintEthers } from 'hooks/ERC20/useMintEthers';
 
 export const MintComponent = (): JSX.Element => {
-  const [account, setAccount] = useState<string>('');
-  const [amount, setAmount] = useState<number>(0);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const [amount, setAmount] = useState<number>(0);
+  const [amountBigNumber, setAmountBigNumber] = useState<BigNumber>(
+    BigNumber.from('0')
+  );
+  const [account, setAccount] = useState<string>('');
 
-  const { data, isLoading, isSuccess, write } = useContractWrite({
-    ...myToken,
-    functionName: 'mint'
-  });
+  const [isLoading, isSuccess] = useMintEthers(
+    isValid,
+    account,
+    amountBigNumber
+  );
+
+  useEffect(() => {
+    if (isSuccess) {
+      setIsValid(false);
+    }
+  }, [isSuccess]);
 
   useEffect(() => {
     if (isValidEthereumAddress(account) && amount > 0) {
@@ -25,29 +36,32 @@ export const MintComponent = (): JSX.Element => {
   }, [account, amount]);
 
   const handleButtonClic = (): void => {
-    if (isValidEthereumAddress(account) && amount > 0) {
-      write({
-        args: [account, amount]
-      });
+    try {
+      if (Number(amount) > 0) {
+        // console.log(amount.toFixed(18));
+        const numberString = ethers.utils.parseUnits(amount.toFixed(18));
+        setAmountBigNumber(numberString);
+        // console.log(numberString.toString());
+        // console.log('Entro aqui');
+        setIsValid(true);
+      }
+    } catch (error) {
+      console.log(error);
     }
-  };
-
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleChangeAddressSpender = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setAccount(event.target.value);
   };
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleChangeAmount = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    try {
-      setAmount(Number(event.target.value));
-    } catch (error) {
-      console.log(error);
-    }
+    setAmount(Number(event.target.value));
+  };
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleChangeSpender = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setAccount(event.target.value);
   };
 
   return isLoading ? (
@@ -57,36 +71,29 @@ export const MintComponent = (): JSX.Element => {
       <Title title={'Mint'}></Title>
       <TextField
         id="filled-basic"
-        label="Cuenta a crear nuevos tokens"
+        label="Account"
         variant="filled"
-        onChange={handleChangeAddressSpender}
+        onChange={handleChangeSpender}
         value={account}
       />
       <TextField
         id="filled-basic"
-        type="number"
-        label="Crear:"
+        label="Amount"
         variant="filled"
+        type="number"
         onChange={handleChangeAmount}
         value={amount}
       />
+      <Typography sx={{ mt: 2 }}>Numero:{amount.toFixed(18)} </Typography>
       <Button
         sx={{ mt: 2 }}
         variant="contained"
         onClick={handleButtonClic}
         disabled={!isDisabled}
       >
-        Enviar
+        Consultar
       </Button>
-      <Typography sx={{ mt: 2 }}>
-        {isLoading ? 'Minting...' : 'Mint'}
-      </Typography>
-      <Typography sx={{ mt: 2 }}>
-        {data !== undefined ? data.hash : ''}
-      </Typography>
-      {isSuccess && (
-        <Typography sx={{ mt: 2 }}>Tokens Send to {account}</Typography>
-      )}
+      {isSuccess ? 'Se realizo la transaccion' : ''}
     </React.Fragment>
   );
 };

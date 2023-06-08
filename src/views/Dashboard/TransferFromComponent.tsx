@@ -1,41 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
-import { useTransferFromToken } from 'hooks/useTransferFromToken';
 import { isValidEthereumAddress } from 'utils/ethereum';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
-// import { useTransferToken } from 'hooks/useTransferToken';
-// import { useCustomDispatch } from 'hooks/redux';
-// import {
-//   useContractWrite,
-//   usePrepareContractWrite,
-//   useWaitForTransaction
-// } from 'wagmi';
-// import { myToken } from 'service/web3Service';
+import { useContractWrite } from 'wagmi';
+import { myToken } from 'service/web3Service';
 
 export const TransferFromComponent = (): JSX.Element => {
-  const [spender, setSpender] = useState<string>('');
+  const [sender, setSender] = useState<string>('');
   const [to, setTo] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
-  const [isValid, setIsValid] = useState<boolean>(false);
-  const [data, isLoading, isSuccess, write] = useTransferFromToken(
-    spender,
-    to,
-    amount,
-    isValid
-  );
+  const { data, isLoading, isSuccess, write } = useContractWrite({
+    ...myToken,
+    functionName: 'transferFrom'
+  });
+
+  useEffect(() => {
+    if (isValidEthereumAddress(to) && amount > 0) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [to, amount]);
 
   const handleButtonClic = (): void => {
     if (
-      isValidEthereumAddress(spender) &&
+      isValidEthereumAddress(sender) &&
       isValidEthereumAddress(to) &&
       amount > 0
     ) {
-      setIsValid(true);
-      write?.();
-    } else {
-      setIsValid(false);
+      write({ args: [sender, to, amount] });
     }
   };
 
@@ -43,7 +39,7 @@ export const TransferFromComponent = (): JSX.Element => {
   const handleChangeAddressSpender = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setSpender(event.target.value);
+    setSender(event.target.value);
   };
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -74,7 +70,7 @@ export const TransferFromComponent = (): JSX.Element => {
         label="Cuenta para gastar tokens"
         variant="filled"
         onChange={handleChangeAddressSpender}
-        value={spender}
+        value={sender}
       />
       <TextField
         id="filled-basic"
@@ -91,7 +87,12 @@ export const TransferFromComponent = (): JSX.Element => {
         onChange={handleChangeAmount}
         value={amount}
       />
-      <Button sx={{ mt: 2 }} variant="contained" onClick={handleButtonClic}>
+      <Button
+        sx={{ mt: 2 }}
+        variant="contained"
+        onClick={handleButtonClic}
+        disabled={!isDisabled}
+      >
         Enviar
       </Button>
       <Typography sx={{ mt: 2 }}>

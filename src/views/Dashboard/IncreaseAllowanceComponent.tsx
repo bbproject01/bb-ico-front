@@ -1,27 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 import { isValidEthereumAddress } from 'utils/ethereum';
-import { useContractWriteCustom } from 'hooks/useContractWriteCustom';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
+import { useContractWrite } from 'wagmi';
+import { myToken } from 'service/web3Service';
 
 export const IncreaseAllowanceComponent = (): JSX.Element => {
   const [spender, setSpender] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
-  const [isValid, setIsValid] = useState<boolean>(false);
-  const [data, isLoading, isSuccess, write] = useContractWriteCustom(
-    isValid,
-    'increaseAllowance',
-    [spender, amount]
-  );
+  const { data, isLoading, isSuccess, write } = useContractWrite({
+    ...myToken,
+    functionName: 'increaseAllowance'
+  });
+
+  useEffect(() => {
+    if (isValidEthereumAddress(spender) && amount > 0) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [spender, amount]);
 
   const handleButtonClic = (): void => {
     if (isValidEthereumAddress(spender) && amount > 0) {
-      setIsValid(true);
-      write?.();
-    } else {
-      setIsValid(false);
+      write({ args: [spender, amount] });
     }
   };
 
@@ -63,7 +68,12 @@ export const IncreaseAllowanceComponent = (): JSX.Element => {
         onChange={handleChangeAmount}
         value={amount}
       />
-      <Button sx={{ mt: 2 }} variant="contained" onClick={handleButtonClic}>
+      <Button
+        sx={{ mt: 2 }}
+        variant="contained"
+        onClick={handleButtonClic}
+        disabled={!isDisabled}
+      >
         Enviar
       </Button>
       <Typography sx={{ mt: 2 }}>
