@@ -3,6 +3,7 @@ import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import Title from 'components/Title/Title';
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
 import { useContractERC115 } from 'hooks/useContractERC1155';
+import { ethers } from 'ethers';
 
 export const MintFNFTComponent = (): JSX.Element => {
   const [isValid, setIsValid] = useState<boolean>(false);
@@ -14,7 +15,11 @@ export const MintFNFTComponent = (): JSX.Element => {
   const [data, isLoading, isSuccess, status] = useContractERC115(
     isValid,
     'mint',
-    [originalTerm, maximumReduction, price]
+    [
+      originalTerm,
+      maximumReduction,
+      ethers.utils.parseUnits(price.toString(), 18)
+    ]
   );
 
   useEffect(() => {
