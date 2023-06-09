@@ -94,12 +94,6 @@ export const ERC1155Component: React.FC = () => {
                   <OwnedTokensComponent />
                 </Paper>
               </Grid>
-              {/* FNFTsOwned */}
-              <Grid item xs={12} md={12} lg={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <FNFTsOwnedComponent />
-                </Paper>
-              </Grid>
             </Grid>
           </Container>
         </Box>
