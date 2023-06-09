@@ -10,7 +10,6 @@ import Paper from '@mui/material/Paper';
 import { BalanceOfComponent } from './BalanceOfComponent';
 import { MintFNFTComponent } from './MintComponent';
 import { TokenIDCounterComponent } from './TokenIDCounterComponent';
-import { OwnedTokensComponent } from './OwnedTokensComponent';
 import { AllowanceCustomERC20Component } from './AllowanceCustomERC20Component';
 import { ApproveCustomERC20Component } from './ApproveCustomERC20Component';
 import { ERC20TokenComponent } from './ERC20TokenComponent';
@@ -91,7 +90,7 @@ export const ERC1155Component: React.FC = () => {
               {/* List Tokens */}
               <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <OwnedTokensComponent />
+                  <FNFTsOwnedComponent />
                 </Paper>
               </Grid>
             </Grid>
