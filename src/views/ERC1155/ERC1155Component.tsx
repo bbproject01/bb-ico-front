@@ -15,6 +15,7 @@ import { ApproveCustomERC20Component } from './ApproveCustomERC20Component';
 import { ERC20TokenComponent } from './ERC20TokenComponent';
 import { SetSecurityTokenComponent } from './SetSecurityTokenComponent';
 import { FNFTsOwnedComponent } from './FNFTsOwnedComponent';
+import { Transfer1155Component } from './Transfer1155Component';
 
 const mdTheme = createTheme();
 
@@ -91,6 +92,12 @@ export const ERC1155Component: React.FC = () => {
               <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <FNFTsOwnedComponent />
+                </Paper>
+              </Grid>
+              {/* Tranfer To */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <Transfer1155Component />
                 </Paper>
               </Grid>
             </Grid>
