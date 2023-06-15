@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import Title from 'components/Title/Title';
 import Paper from '@mui/material/Paper';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 import CircularProgressBarBox from 'components/Loading/CircularProgressBarBox';
 import { useGetTokensOwnedEthers } from 'hooks/ERC1155/useGetTokensOwnedEthers';
@@ -94,7 +94,7 @@ export const FNFTsOwnedUnBlockedComponent = (): JSX.Element => {
                             setTokenSelected(item.idToken);
                           }}
                         >
-                          <LockOpenIcon />
+                          <AccessTimeIcon />
                         </IconButton>
                       </TableCell>
                     </TableRow>
