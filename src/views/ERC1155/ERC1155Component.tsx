@@ -17,6 +17,8 @@ import { SetSecurityTokenComponent } from './SetSecurityTokenComponent';
 import { FNFTsOwnedComponent } from './FNFTsOwnedComponent';
 import { Transfer1155Component } from './Transfer1155Component';
 import { WithDrawComponent } from './WithDrawComponent';
+import { FNFTsOwnedUnBlockedComponent } from './FNFTsOwnedUnBlockedComponent';
+import { BalanceCustomERC20Component } from './BalanceCustomERC20Component';
 
 const mdTheme = createTheme();
 
@@ -39,6 +41,14 @@ export const ERC1155Component: React.FC = () => {
         >
           <Toolbar />
           <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+            {/* Balance */}
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper
+                sx={{ p: 2, display: 'flex', flexDirection: 'column', mt: 2 }}
+              >
+                <BalanceCustomERC20Component />
+              </Paper>
+            </Grid>
             {/* ApprovedTokens */}
             <Grid item xs={12} md={12} lg={12}>
               <Grid item xs={6} md={6} lg={6}>
@@ -99,6 +109,12 @@ export const ERC1155Component: React.FC = () => {
               <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Transfer1155Component />
+                </Paper>
+              </Grid>
+              {/* FNFTsOwnedUnBlockedComponent */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <FNFTsOwnedUnBlockedComponent />
                 </Paper>
               </Grid>
               {/* WithDrawComponent */}

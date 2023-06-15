@@ -24,10 +24,10 @@ export const WithDrawComponent = (): JSX.Element => {
   }, [id]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || error !== null) {
       setIsValid(false);
     }
-  }, [isSuccess]);
+  }, [isSuccess, error]);
 
   const handleButtonClic = (): void => {
     setIsValid(true);
