@@ -17,8 +17,9 @@ import { SetSecurityTokenComponent } from './SetSecurityTokenComponent';
 import { FNFTsOwnedComponent } from './FNFTsOwnedComponent';
 import { Transfer1155Component } from './Transfer1155Component';
 import { WithDrawComponent } from './WithDrawComponent';
-import { FNFTsOwnedUnBlockedComponent } from './FNFTsOwnedUnBlockedComponent';
 import { BalanceCustomERC20Component } from './BalanceCustomERC20Component';
+import { CreateLockComponent } from './CreateLockComponent';
+import { UnlockComponent } from './UnLockComponent';
 
 const mdTheme = createTheme();
 
@@ -52,7 +53,9 @@ export const ERC1155Component: React.FC = () => {
             {/* ApprovedTokens */}
             <Grid item xs={12} md={12} lg={12}>
               <Grid item xs={6} md={6} lg={6}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                <Paper
+                  sx={{ p: 2, display: 'flex', flexDirection: 'column', mt: 2 }}
+                >
                   <AllowanceCustomERC20Component />
                 </Paper>
               </Grid>
@@ -81,10 +84,41 @@ export const ERC1155Component: React.FC = () => {
                   <MintFNFTComponent />
                 </Paper>
               </Grid>
+
+              {/* List Tokens */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <FNFTsOwnedComponent />
+                </Paper>
+              </Grid>
               {/* balanceOF */}
               <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <BalanceOfComponent />
+                </Paper>
+              </Grid>
+              {/* Tranfer To */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <Transfer1155Component />
+                </Paper>
+              </Grid>
+              {/* Create Lock */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <CreateLockComponent />
+                </Paper>
+              </Grid>
+              {/* Unlock */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <UnlockComponent />
+                </Paper>
+              </Grid>
+              {/* WithDrawComponent */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <WithDrawComponent />
                 </Paper>
               </Grid>
               {/* IERC20 */}
@@ -97,30 +131,6 @@ export const ERC1155Component: React.FC = () => {
               <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <SetSecurityTokenComponent />
-                </Paper>
-              </Grid>
-              {/* List Tokens */}
-              <Grid item xs={12} md={12} lg={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <FNFTsOwnedComponent />
-                </Paper>
-              </Grid>
-              {/* Tranfer To */}
-              <Grid item xs={12} md={12} lg={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Transfer1155Component />
-                </Paper>
-              </Grid>
-              {/* FNFTsOwnedUnBlockedComponent */}
-              <Grid item xs={12} md={12} lg={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <FNFTsOwnedUnBlockedComponent />
-                </Paper>
-              </Grid>
-              {/* WithDrawComponent */}
-              <Grid item xs={12} md={12} lg={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <WithDrawComponent />
                 </Paper>
               </Grid>
             </Grid>

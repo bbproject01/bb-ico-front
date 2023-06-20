@@ -1,7 +1,10 @@
 import { type BigNumber } from 'ethers';
 
 export interface IFNFTMetadataStruct {
-  maximumReduction: BigNumber;
+  blocked: boolean;
+  blockDate: BigNumber;
   originalTerm: BigNumber;
+  createDate: BigNumber;
   timePassed: BigNumber;
+  maximumReduction: BigNumber;
 }

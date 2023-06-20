@@ -6,6 +6,7 @@ import { useAccount } from 'wagmi';
 import { useAllowanceEthers } from 'hooks/ERC20/useAllowanceEthers';
 import { FNFT } from 'service/web3Service';
 import { Button } from '@mui/material';
+import { ethers } from 'ethers';
 
 export const AllowanceCustomERC20Component = (): JSX.Element => {
   const { address: owner = '0x' } = useAccount();
@@ -29,7 +30,7 @@ export const AllowanceCustomERC20Component = (): JSX.Element => {
   ) : (
     <React.Fragment>
       <Title title={'Allowance'}></Title>
-      {allowance != null ? allowance.toString() : ''}
+      {allowance != null ? ethers.utils.formatEther(allowance) : ''}
       <Button
         sx={{ mt: 2 }}
         variant="contained"

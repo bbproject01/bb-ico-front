@@ -8,7 +8,7 @@ import { ethers } from 'ethers';
 export const MintFNFTComponent = (): JSX.Element => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const [originalTerm, setOriginalTerm] = useState<number>(0);
-  const [maximumReduction, setMaximumReduction] = useState<number>(25);
+  const [maximumReduction] = useState<number>(25);
   const [price, setPrice] = useState<number>(0);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
@@ -52,15 +52,15 @@ export const MintFNFTComponent = (): JSX.Element => {
   };
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleChangeMaximumReduction = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    try {
-      setMaximumReduction(Number(event.target.value));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleChangeMaximumReduction = (
+  //   event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  // ) => {
+  //   try {
+  //     setMaximumReduction(Number(event.target.value));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleChangePrice = (
@@ -93,11 +93,12 @@ export const MintFNFTComponent = (): JSX.Element => {
             }
           }}
           label="Plazo en Meses del FNFT"
+          helperText="Maximo 12 Meses, Minimo 1 Mes"
           variant="filled"
           onChange={handleChangeOriginalTerm}
           value={originalTerm}
         />
-        <TextField
+        {/* <TextField
           id="filled-basic"
           type="number"
           label="Reducción máxima permitida"
@@ -105,11 +106,11 @@ export const MintFNFTComponent = (): JSX.Element => {
           onChange={handleChangeMaximumReduction}
           value={maximumReduction}
           disabled={true}
-        />
+        /> */}
         <TextField
           id="filled-basic"
           type="number"
-          label="Precio en tokens ERC20"
+          label="Inversion en tokens ERC20"
           variant="filled"
           onChange={handleChangePrice}
           value={price}

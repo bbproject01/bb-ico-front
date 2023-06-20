@@ -5,6 +5,7 @@ import Title from 'components/Title/Title';
 import { useAccount } from 'wagmi';
 import { Button } from '@mui/material';
 import { useContractReadERC20Mumbai } from 'hooks/useContractReadERC20Mumbai';
+import { ethers } from 'ethers';
 
 export const BalanceCustomERC20Component = (): JSX.Element => {
   const { address: owner = '0x' } = useAccount();
@@ -25,8 +26,8 @@ export const BalanceCustomERC20Component = (): JSX.Element => {
     <CircularProgressBarBox />
   ) : (
     <React.Fragment>
-      <Title title={'Balance'}></Title>
-      {data != null ? data.toString() : ''}
+      <Title title={'Security Token Balance'}></Title>
+      {data != null ? ethers.utils.formatEther(data) : ''}
       <Button
         sx={{ mt: 2 }}
         variant="contained"

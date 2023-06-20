@@ -57,7 +57,7 @@ export const FNFTsOwnedUnBlockedComponent = (): JSX.Element => {
       sx={{ flexDirection: { xs: 'column', sm: 'row' } }}
     >
       <Stack spacing={2}>
-        <Title title={'FNFTs Owned'}></Title>
+        <Title title={'Toolt Test'}></Title>
         {data !== undefined && data?.length > 0 ? (
           <TableContainer component={Paper}>
             <Table
