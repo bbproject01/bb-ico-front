@@ -8,18 +8,18 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { BalanceOfComponent } from './BalanceOfComponent';
-import { MintFNFTComponent } from './MintComponent';
+// import { MintFNFTComponent } from './MintComponent';
 import { TokenIDCounterComponent } from './TokenIDCounterComponent';
 import { AllowanceCustomERC20Component } from './AllowanceCustomERC20Component';
 import { ApproveCustomERC20Component } from './ApproveCustomERC20Component';
-import { ERC20TokenComponent } from './ERC20TokenComponent';
-import { SetSecurityTokenComponent } from './SetSecurityTokenComponent';
-import { FNFTsOwnedComponent } from './FNFTsOwnedComponent';
+// import { ERC20TokenComponent } from './ERC20TokenComponent';
+// import { SetSecurityTokenComponent } from './SetSecurityTokenComponent';
+// import { FNFTsOwnedComponent } from './FNFTsOwnedComponent';
 import { Transfer1155Component } from './Transfer1155Component';
-import { WithDrawComponent } from './WithDrawComponent';
+// import { WithDrawComponent } from './WithDrawComponent';
 import { BalanceCustomERC20Component } from './BalanceCustomERC20Component';
-import { CreateLockComponent } from './CreateLockComponent';
-import { UnlockComponent } from './UnLockComponent';
+// import { CreateLockComponent } from './CreateLockComponent';
+// import { UnlockComponent } from './UnLockComponent';
 import { Tooltip } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 
@@ -91,7 +91,7 @@ export const ERC1155Component: React.FC = () => {
             </Grid>
             <Grid container spacing={3}>
               {/* Mint */}
-              <Grid item xs={12} md={12} lg={12}>
+              {/* <Grid item xs={12} md={12} lg={12}>
                 <Paper
                   sx={{ p: 2, display: 'flex', flexDirection: 'column', mt: 2 }}
                 >
@@ -100,17 +100,17 @@ export const ERC1155Component: React.FC = () => {
                   </Tooltip>
                   <MintFNFTComponent />
                 </Paper>
-              </Grid>
+              </Grid> */}
 
               {/* List Tokens */}
-              <Grid item xs={12} md={12} lg={12}>
+              {/* <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Tooltip title="Listado de los tokens FNFT's que un usuario posee.">
                     <InfoIcon fontSize="small" />
                   </Tooltip>
                   <FNFTsOwnedComponent />
                 </Paper>
-              </Grid>
+              </Grid> */}
               {/* balanceOF */}
               <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
@@ -130,50 +130,50 @@ export const ERC1155Component: React.FC = () => {
                 </Paper>
               </Grid>
               {/* Create Lock */}
-              <Grid item xs={12} md={12} lg={12}>
+              {/* <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Tooltip title="Te permite crear un bloqueo para tu FNFT (aun sin matematica ni reglas de negocio) ">
                     <InfoIcon fontSize="small" />
                   </Tooltip>
                   <CreateLockComponent />
                 </Paper>
-              </Grid>
+              </Grid> */}
               {/* Unlock */}
-              <Grid item xs={12} md={12} lg={12}>
+              {/* <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Tooltip title="Te permite desbloquear tu FNFT (aun sin matematica ni reglas de negocio) ">
                     <InfoIcon fontSize="small" />
                   </Tooltip>
                   <UnlockComponent />
                 </Paper>
-              </Grid>
+              </Grid> */}
               {/* WithDrawComponent */}
-              <Grid item xs={12} md={12} lg={12}>
+              {/* <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Tooltip title="Te permite retirar - cangear tu FNFT x ERC20, con el saldo que fue adquirido  (sin matematicas, ni rewards) ">
                     <InfoIcon fontSize="small" />
                   </Tooltip>
                   <WithDrawComponent />
                 </Paper>
-              </Grid>
+              </Grid> */}
               {/* IERC20 */}
-              <Grid item xs={12} md={12} lg={12}>
+              {/* <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Tooltip title="Te permite conocer la direccion de tu Security Token">
                     <InfoIcon fontSize="small" />
                   </Tooltip>
                   <ERC20TokenComponent />
                 </Paper>
-              </Grid>
+              </Grid> */}
               {/* SET  IERC20 */}
-              <Grid item xs={12} md={12} lg={12}>
+              {/* <Grid item xs={12} md={12} lg={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Tooltip title="Te permite cambiar la direccion de tu Security Token">
                     <InfoIcon fontSize="small" />
                   </Tooltip>
                   <SetSecurityTokenComponent />
                 </Paper>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Container>
         </Box>
